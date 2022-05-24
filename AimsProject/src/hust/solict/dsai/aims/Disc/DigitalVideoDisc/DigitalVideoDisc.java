@@ -1,6 +1,6 @@
+package hust.solict.dsai.aims.Disc.DigitalVideoDisc;
 
-
-public class DigitalVideoDisc {
+public class DigitalVideoDisc implements Comparable<DigitalVideoDisc> {
 	private String title;
 	private String category;
 	private String director;
@@ -69,7 +69,18 @@ public class DigitalVideoDisc {
 		
 	}
 	
-	
-	
+	public String toString() {
+    	return "DVD - " + title + " - " + category + " - " + director + " - " + length + ": " + cost + " $";
+	}
+	@Override
+	public int compareTo(DigitalVideoDisc o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public boolean isMatch(String Title) {
+		final String casedisctitle = title.toLowerCase();
+		return casedisctitle.contains(Title.toLowerCase());
+	}
 }
 
