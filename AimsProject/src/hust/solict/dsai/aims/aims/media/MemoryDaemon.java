@@ -1,8 +1,8 @@
 package hust.solict.dsai.aims.media;
 
-public class Book {
+public class MemoryDaemon {
 
-	public Book() {
+	public MemoryDaemon() {
 		// TODO Auto-generated constructor stub
 	}
 

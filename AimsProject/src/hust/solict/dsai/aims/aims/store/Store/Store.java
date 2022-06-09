@@ -1,37 +1,40 @@
 package hust.solict.dsai.aims.store.Store;
-import java.util.Arrays;
+import java.util.*;
+
 import java.util.Scanner;
 
-import hust.solict.dsai.aims.Disc.DigitalVideoDisc.DigitalVideoDisc;
+import hust.solict.dsai.aims.media.DigitalVideoDisc;
+import hust.solict.dsai.aims.media.Media;
 
 
 public class Store {
-    public static DigitalVideoDisc[] itemsinStore = new DigitalVideoDisc[50];
-    public int numofDVDs = 0;
+    public static ArrayList<Media> itemsinStore = new ArrayList<Media>();
+    public static int numofDVDs = 0;
     
-    public void addDVD(DigitalVideoDisc disc1, DigitalVideoDisc...discs) {
-			itemsinStore[numofDVDs] = disc1;
-			numofDVDs++;
+    public void addMedia(Media...discs) {
 			for (int i=0; i<discs.length; i++) {
-				itemsinStore[numofDVDs + i] = discs[i];
-			}
-			numofDVDs += discs.length;
+			itemsinStore.add(discs[i]);
+			numofDVDs++;
 			System.out.println("The list of DVDs have been added");
+			}
 	}
 		
     
-    public void removeDVD(DigitalVideoDisc disc) {
-    	if (numofDVDs > 0) {
-    			for (int i=0; i < numofDVDs; i++) {
-    				if (disc.equals(itemsinStore[i])) {
-    					itemsinStore[i] = null;
-    					numofDVDs -= 1;
-    					System.out.println("removed");
-    					break;
+    public void removeMedia(Media disc) {
+    	if (Media.numberMedia > 0) {
+    		for (int i=0; i < Media.numberMedia; i++) {
+    			if (disc.equals(itemsinStore.get(i))) {
+    				itemsinStore.remove(i);
+    				Media.numberMedia--;
+    				System.out.println("The item has been removed from your cart");
+    				break;
     			}
-    	}		
+    		}
     	}
-    }
+   
+    	else
+    		System.out.println("The item was not in the cart");
+    	}
     public static void showMenu() {
         System.out.println("AIMS: ");
         System.out.println("--------------------------------");
@@ -66,20 +69,18 @@ public class Store {
         System.out.println("Please choose a number: 0-1-2-3-4");
 }
     public static void viewstore() {
-	    DigitalVideoDisc[] removednull = Arrays.stream(itemsinStore).filter(object -> object != null).toArray(size -> new DigitalVideoDisc[size]);
-	    for (int i=0; i<removednull.length; i++) {
-		    System.out.println(i+1 + ". " + removednull[i].toString());
+	    for (int i=0; i<numofDVDs; i++) {
+		    System.out.println(i+1 + ". " + itemsinStore.get(i).toString());
 	    }
     }
 	 public static void searchbytitle() {
 	    	Scanner sc = new Scanner(System.in);
 	    	System.out.println("Search for titles: ");
 	    	String a = sc.nextLine();
-	        DigitalVideoDisc[] newOrder = Arrays.stream(itemsinStore).filter(object -> object != null).toArray(size -> new DigitalVideoDisc[size]);
 	        int found = 0;
-	    	for (int i=0; i<newOrder.length; i++) {
-	    		if (newOrder[i].isMatch(a)) {
-	    			System.out.println(newOrder[i].toString());
+	    	for (int i=0; i<numofDVDs; i++) {
+	    		if (itemsinStore.get(i).getTitle().contains(a)) {
+	    			System.out.println(itemsinStore.get(i).toString());
 	    			found++;
 	    		}
 	    	}
@@ -102,7 +103,7 @@ public class Store {
 	    		
 	    		DigitalVideoDisc dvd4 = new DigitalVideoDisc("Once Twice Melody", "Comedy", "Sion Sono", 75, 30f);
 	    		
-	    		store.addDVD(dvd1, dvd2, dvd3, dvd4);
+	    		store.addMedia(dvd1, dvd2, dvd3, dvd4);
 	    		
 	    		
 	  
