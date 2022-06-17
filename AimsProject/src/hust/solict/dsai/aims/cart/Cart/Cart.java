@@ -1,7 +1,6 @@
 package hust.solict.dsai.aims.cart.Cart;
 import java.util.ArrayList;
 
-import hust.solict.dsai.aims.media.DigitalVideoDisc;
 import hust.solict.dsai.aims.media.Media;
 
 import java.util.*;
@@ -9,17 +8,18 @@ import java.util.*;
 
 public class Cart {
 	public static final int MAX_NUMBERS_ORDERED = 20;
-	private ArrayList<Media> itemsOrdered = new ArrayList<Media>();
+	public ArrayList<Media> itemsOrdered = new ArrayList<Media>();
 	private static int numberCart = 0;
-	private int rand = (int)(Math.random() * Media.numberMedia);
-    private Media luckyitem = itemsOrdered.get(rand);
+	private int rand = (int)(Math.random() * itemsOrdered.size());
 	
+	
+
 	public float totalCost() {
     	float sum = 0;
     	for (int i=0; i<numberCart; i++) {
     		sum += itemsOrdered.get(i).getCost();
     	}
-    	sum -= luckyitem.getCost();
+    	sum -= itemsOrdered.get(rand).getCost();
     	return sum;
     }
     
@@ -33,7 +33,15 @@ public class Cart {
 			System.out.println("The cart is almost full");
 	}
 	
-	public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
+    public void addMedia(Media...discs) {
+			for (int i=0; i<discs.length; i++) {
+			itemsOrdered.add(discs[i]);
+			numberCart++;
+			System.out.println("The list of DVDs have been added");
+			}
+	}
+	
+	public void removeMedia(Media disc) {
     	if (numberCart > 0) {
     		for (int i=0; i < numberCart; i++) {
     			if (disc.equals(itemsOrdered.get(i))) {
@@ -76,6 +84,11 @@ public class Cart {
     	if (sc != null) {
     		sc.close();
     	}
+    }
+    
+    public void removeall() {
+    	numberCart = 0;
+    	itemsOrdered.clear();
     }
     
     

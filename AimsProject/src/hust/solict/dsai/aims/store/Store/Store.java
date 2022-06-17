@@ -1,7 +1,6 @@
 package hust.solict.dsai.aims.store.Store;
 import java.util.*;
 
-import java.util.Scanner;
 
 import hust.solict.dsai.aims.media.DigitalVideoDisc;
 import hust.solict.dsai.aims.media.Media;
@@ -68,27 +67,21 @@ public class Store {
 	    System.out.println("--------------------------------");
         System.out.println("Please choose a number: 0-1-2-3-4");
 }
-    public static void viewstore() {
+    public void viewstore() {
 	    for (int i=0; i<numofDVDs; i++) {
 		    System.out.println(i+1 + ". " + itemsinStore.get(i).toString());
 	    }
     }
-	 public static void searchbytitle() {
-	    	Scanner sc = new Scanner(System.in);
-	    	System.out.println("Search for titles: ");
-	    	String a = sc.nextLine();
+	public static void searchbytitle(String str) {
 	        int found = 0;
 	    	for (int i=0; i<numofDVDs; i++) {
-	    		if (itemsinStore.get(i).getTitle().contains(a)) {
+	    		if (itemsinStore.get(i).isMatch(str)) {
 	    			System.out.println(itemsinStore.get(i).toString());
 	    			found++;
 	    		}
 	    	}
 	    	if (found == 0) {
 	    		System.out.println("Title not found, please try again");
-	    	}
-	    	if (sc != null) {
-	    		sc.close();
 	    	}
 	 }
 	    public static void main(String[] args) {

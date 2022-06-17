@@ -2,6 +2,7 @@ package hust.solict.dsai.aims.utils.DVDUtils;
 import java.util.*;
 
 import hust.solict.dsai.aims.media.DigitalVideoDisc;
+import hust.solict.dsai.aims.media.Media;
 public class DVDUtils {	  
 	
     public static String comparebyCost(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
@@ -24,24 +25,24 @@ public class DVDUtils {
     		return ("compare by title (ascending order): " + dvd1.getTitle() + "; " + dvd2.getTitle());
     }
     
-    public static DigitalVideoDisc[] sortbyCost(DigitalVideoDisc[] dvdList) {
-    	DigitalVideoDisc[] discs = dvdList;
-        Arrays.sort(discs, new Comparator<DigitalVideoDisc>() {
-            public int compare(DigitalVideoDisc disc1, DigitalVideoDisc disc2) {
-                return -Float.compare(disc1.getCost(), disc2.getCost());
-            }
-        });
-        return discs;
+    public static ArrayList<Media> sortbyCost(ArrayList<Media> dvdList) {
+        Collections.sort(dvdList, new Comparator<Media>() {
+        	@Override
+        	public int compare(Media o1, Media o2) {
+        		return -Float.compare(o1.getCost(), o2.getCost());
+        	}
+        }
+        		);
+        return dvdList;
     }
     
-    public static DigitalVideoDisc[] sortbyTitle(DigitalVideoDisc[] dvdList) {
-    	DigitalVideoDisc[] discs = dvdList;
-    	Arrays.sort(discs, new Comparator<DigitalVideoDisc>() {
-    		public int compare(DigitalVideoDisc disc1, DigitalVideoDisc disc2) {
+    public static ArrayList<Media> sortbyTitle(ArrayList<Media> dvdList) {
+    	Collections.sort(dvdList, new Comparator<Media>() {
+    		public int compare(Media disc1, Media disc2) {
     			return disc1.getTitle().compareTo(disc2.getTitle());
     		}
     	});
-    	return discs;
+    	return dvdList;
        }
 }
     
