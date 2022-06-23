@@ -6,6 +6,7 @@ import hust.solict.dsai.aims.utils.DVDUtils.DVDUtils;
 
 import java.util.*;
 import hust.solict.dsai.aims.media.Media;
+import hust.solict.dsai.aims.screen.manager.StoreManagerScreen;
 
 public class Aims {
 	public static void main(String[] args) {
@@ -77,9 +78,9 @@ public class Aims {
 				else if (ent == 2) {
 					for (int i=0; i<Store.numofDVDs; i++) {
 						String a = sc.nextLine();
-			    		if (Store.itemsinStore.get(i).getTitle().contains(a)) {
-			    			System.out.println(Store.itemsinStore.get(i).toString());
-			    			store.removeMedia(Store.itemsinStore.get(i));
+			    		if (store.itemsinStore.get(i).isMatch(a)) {
+			    			System.out.println(store.itemsinStore.get(i).toString());
+			    			store.removeMedia(store.itemsinStore.get(i));
 			    		}
 					}
 				}
@@ -146,9 +147,12 @@ public class Aims {
 			
 			else if (mode == APP.SEE_A_DVDS_DETAILS) {
 		    	System.out.println("Search for titles: ");
-				String title = sc.nextLine();
-				Store.searchbytitle(title);
-				route.removeLast();
+				for (int i=0; i<Store.numofDVDs; i++) {
+					String a = sc.nextLine();
+		    		if (store.itemsinStore.get(i).isMatch(a)) {
+		    			System.out.println(store.itemsinStore.get(i).toString());
+			        }
+				}
 			}
 			
 			else if (mode == APP.UPDATE_STORE) {

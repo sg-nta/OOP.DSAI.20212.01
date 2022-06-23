@@ -7,7 +7,7 @@ import hust.solict.dsai.aims.media.Media;
 
 
 public class Store {
-    public static ArrayList<Media> itemsinStore = new ArrayList<Media>();
+    public ArrayList<Media> itemsinStore = new ArrayList<Media>();
     public static int numofDVDs = 0;
     
     public void addMedia(Media...discs) {
@@ -72,18 +72,7 @@ public class Store {
 		    System.out.println(i+1 + ". " + itemsinStore.get(i).toString());
 	    }
     }
-	public static void searchbytitle(String str) {
-	        int found = 0;
-	    	for (int i=0; i<numofDVDs; i++) {
-	    		if (itemsinStore.get(i).isMatch(str)) {
-	    			System.out.println(itemsinStore.get(i).toString());
-	    			found++;
-	    		}
-	    	}
-	    	if (found == 0) {
-	    		System.out.println("Title not found, please try again");
-	    	}
-	 }
+
 	    public static void main(String[] args) {
 	    		
 	    		Store store = new Store();
@@ -101,5 +90,11 @@ public class Store {
 	    		
 	  
 }
+
+
+		public ArrayList<Media> getItemsInStore() {
+			return this.itemsinStore;
+
+		}
 }
 

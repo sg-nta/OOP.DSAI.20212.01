@@ -6,6 +6,19 @@ public class Book extends Media {
 	public Book() {
 		// TODO Auto-generated constructor stub
 	}
+	public static String content = new String();	
+	Map<String, Integer> wordFrequency = new HashMap<>();
+	List<String> contentTokens = new ArrayList<String>();
+	
+	public void processContent() {
+		String[] tokens = content.split(" ");
+		for (String token : tokens) {
+			wordFrequency.compute(token,  (k, v) -> v == null ? 1 : v + 1);
+		}
+		contentTokens = Arrays.asList(tokens);
+		Collections.sort(contentTokens);
+		
+	}
 	
 	public void addAuthor(String authorName) {
 		if (!authors.contains(authorName)) {
@@ -26,9 +39,11 @@ public class Book extends Media {
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
 	}
+	public String toString() {
+    	return "DVD - " + id + " - " + title + " - " + category + " - " + contentTokens.toString() + "-" + wordFrequency.toString() + ": " + cost + " $";
+	}
 	
 	
-
 }
 
 
