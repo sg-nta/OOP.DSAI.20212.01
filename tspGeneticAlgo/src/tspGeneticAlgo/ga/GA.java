@@ -1,4 +1,4 @@
-package tspGeneticAlgo;
+package tspGeneticAlgo.ga;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -7,13 +7,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import tspGeneticAlgo.individual.Individual;
+import tspGeneticAlgo.node.Node;
+import tspGeneticAlgo.population.Population;
+import tspGeneticAlgo.route.Route;
+
 
 public class GA {
 	private double mutationRate;
 	private double crossOverRate;
 	private int populationSize;
     private int survival;
-	protected int tournamentSize;
+	private int tournamentSize;
 
 
 	public GA(int populationSize, double mutationRate, double crossOverRate, int survival,
@@ -57,7 +62,7 @@ public class GA {
 	public Population crossOver(Population population) {
 		Population result = new Population(population.getSize());
 		for (int i = 0; i < population.getSize(); i++) {
-			Individual father = population.getIndividualByFitnessRank(i);
+			Individual father = population.sortByFitness().get(i);
 			if (this.crossOverRate > Math.random() && i >= this.survival ) {
 				Individual mother = this.selectMother(population, father);
 				ArrayList<Integer> childChromosome = new ArrayList<Integer>(Collections.nCopies(father.getLength(), -1));
@@ -98,7 +103,7 @@ public class GA {
 	public Population mutation(Population population) {
 		Population result = new Population(population.getSize());
 		for (int i = 0; i < population.getSize(); i++) {
-			Individual individual = population.getIndividualByFitnessRank(i);
+			Individual individual = population.sortByFitness().get(i);
 			
 			if (i >= this.survival) {
 				if (this.mutationRate >= Math.random()) {

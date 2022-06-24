@@ -1,6 +1,6 @@
 package tspGeneticAlgo.test;
 
-import tspGeneticAlgo.GUI;
+import tspGeneticAlgo.gui.GUI;
 
 public class GUI_test {
 	GUI gui = new GUI();

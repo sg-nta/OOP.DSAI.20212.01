@@ -1,4 +1,4 @@
-package tspGeneticAlgo;
+package tspGeneticAlgo.population;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import tspGeneticAlgo.individual.Individual;
 
 
 
@@ -22,9 +24,10 @@ public class Population {
 			this.population.set(individualCount, individual);
 		}
 	}
-	public Individual getIndividualByFitnessRank(int rank) {
-		List<Individual> result = (ArrayList<Individual>) population.stream().sorted(Comparator.comparing(Individual::getFitness).reversed()).collect(Collectors.toList());
-		return result.get(rank);
+	public List<Individual> sortByFitness(){
+		
+		Collections.sort(population, Individual.COMPARE_BY_FITNESS);
+		return population;
 	}
 	public ArrayList<Individual> getPopulation() {
 		return population;

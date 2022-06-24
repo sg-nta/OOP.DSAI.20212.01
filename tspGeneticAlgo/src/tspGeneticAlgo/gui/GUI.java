@@ -1,10 +1,11 @@
-package tspGeneticAlgo;
+package tspGeneticAlgo.gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+
+import tspGeneticAlgo.ga.GA;
+import tspGeneticAlgo.gui.Draw;
+import tspGeneticAlgo.individual.Individual;
+import tspGeneticAlgo.node.Node;
+import tspGeneticAlgo.population.Population;
+import tspGeneticAlgo.route.Route;
 
 public class GUI extends JFrame{
 	private Route route;
@@ -33,6 +41,7 @@ public class GUI extends JFrame{
 	private int numSurvival;
 	private int status = 0;
 	private Draw draw = new Draw();
+	private List<Individual> sortedPopulation;
 	
 	public GUI() {
 		Container cp = getContentPane();
@@ -112,14 +121,16 @@ public class GUI extends JFrame{
 					GA ga = new GA(populationSize, 0.001, 0.9, numSurvival, 5);
 					population = ga.initPopulation(numNodes);
 					ga.updateFitness(population, nodes);
-					Route startRoute = new Route(population.getIndividualByFitnessRank(0), nodes);
+					sortedPopulation = population.sortByFitness();
+					Route startRoute = new Route(sortedPopulation.get(0), nodes);
 					prevRoute = startRoute;
 					
 					time = new Timer(20, new ActionListener() {
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							Route route = new Route(population.getIndividualByFitnessRank(0), nodes);
+							sortedPopulation = population.sortByFitness();
+							Route route = new Route(sortedPopulation.get(0), nodes);
 							System.out.println("G"+generation+" Best distance: " + route.totalDistance());
 							generations.setText(String.valueOf(generation));
 							bestDistance.setText(String.valueOf((double)Math.round(route.totalDistance()*100)/100));
