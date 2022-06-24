@@ -1,4 +1,4 @@
-package tspGeneticAlgo;
+package tspGeneticAlgo.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import tspGeneticAlgo.node.Node;
+import tspGeneticAlgo.route.Route;
 
 public class Draw extends JPanel {
 	private Route route;

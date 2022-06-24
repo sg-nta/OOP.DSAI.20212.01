@@ -1,10 +1,12 @@
-package tspGeneticAlgo;
+package tspGeneticAlgo.individual;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Individual {
 	private ArrayList<Integer> chromosome = new ArrayList<Integer>();;
 	private double fitness;
+	public static final Comparator<Individual> COMPARE_BY_FITNESS = new IndividualComparatorByFitness();
 	public Individual(ArrayList<Integer> chromosome) {
 		this.chromosome = chromosome;
 		// TODO Auto-generated constructor stub
@@ -49,8 +51,10 @@ public class Individual {
 			res += i;
 			res += " - ";
 		}
+		res += "0.";
 		return res;
 	}
+	
 	
 	
 
