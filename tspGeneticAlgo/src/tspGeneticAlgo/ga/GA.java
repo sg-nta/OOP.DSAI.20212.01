@@ -17,23 +17,20 @@ public class GA {
 	private double mutationRate;
 	private double crossOverRate;
 	private int populationSize;
-    private int survival;
-	private int tournamentSize;
+    private int elitism;
+	private int nGene;
 
-
-	public GA(int populationSize, double mutationRate, double crossOverRate, int survival,
-			int tournamentSize) {
+	public GA(int populationSize, int nGene, double mutationRate, double crossOverRate, int elitism) {
 		this.crossOverRate = crossOverRate;
 		this.mutationRate = mutationRate;
 		this.populationSize = populationSize;
-        this.survival = survival;
-		this.tournamentSize = tournamentSize;
-
+        this.elitism = elitism;
+		this.nGene = nGene;
 	}
-	public Population initPopulation(int chromosomeLength) {
-		return new Population(this.populationSize, chromosomeLength);
+	public Population initPopulation() {
+		return new Population(this.populationSize, nGene);
 	}
-	public void updateFitness(Population population, Node[] nodes) {
+	public void updateFitness(Population population, Node[]nodes) {
 		for (Individual individual : population.getPopulation()) {
 			Route route = new Route(individual, nodes);
 			double fitness = 1/route.totalDistance();
@@ -42,8 +39,8 @@ public class GA {
 	}
 	public Individual selectMother(Population population, Individual father) {
 		ArrayList<Individual> tournament = new ArrayList<Individual>();
-		int[] indexList = new int[this.tournamentSize];
-		while (tournament.size() < this.tournamentSize) {
+		int[] indexList = new int[this.nGene];
+		while (tournament.size() < this.nGene) {
 			int rand = (int) (Math.random()*population.getSize());
 			int check = 0;
 			for (int index:indexList) {
@@ -58,19 +55,18 @@ public class GA {
 		List<Individual> result = (ArrayList<Individual>) tournament.stream().sorted(Comparator.comparing(Individual::getFitness).reversed()).collect(Collectors.toList());
 		return result.get(0);
 	}
-	
 	public Population crossOver(Population population) {
 		Population result = new Population(population.getSize());
 		for (int i = 0; i < population.getSize(); i++) {
 			Individual father = population.sortByFitness().get(i);
-			if (this.crossOverRate > Math.random() && i >= this.survival ) {
+			if (this.crossOverRate > Math.random() && i >= this.elitism) {
 				Individual mother = this.selectMother(population, father);
 				ArrayList<Integer> childChromosome = new ArrayList<Integer>(Collections.nCopies(father.getLength(), -1));
-				
+
 				Individual child = new Individual(childChromosome);
 				int rand1 = (int) (Math.random()*father.getLength());
 				int rand2 = (int) (Math.random()*father.getLength());
-				
+
 				int start = Math.min(rand1, rand2);
 				int end = Math.max(rand1, rand2);
 				child.setElement(0, father.getElement(0));
@@ -82,7 +78,7 @@ public class GA {
 					if (index >= father.getLength()) {
 						index -= father.getLength();
 					}
-					if (child.containElement(mother.getElement(index)) == false) {
+					if (!child.containElement(mother.getElement(index))) {
 						for (int k = 0; k < child.getLength(); k++) {
 							if (child.getElement(k) == -1) {
 								child.setElement(k, mother.getElement(index));
@@ -99,15 +95,13 @@ public class GA {
 		}
 		return result;
 	}
-	
 	public Population mutation(Population population) {
 		Population result = new Population(population.getSize());
 		for (int i = 0; i < population.getSize(); i++) {
 			Individual individual = population.sortByFitness().get(i);
 			
-			if (i >= this.survival) {
+			if (i >= this.elitism) {
 				if (this.mutationRate >= Math.random()) {
-
 						int rand1 = (int) (Math.random()*individual.getLength());
 						int rand2 = (int) (Math.random()*individual.getLength());
 						
@@ -128,14 +122,14 @@ public class GA {
 							individual.setElement(j, mutationList.get(mutationList.size() - 1));
 							mutationList.remove(mutationList.size() - 1);
 						}
-						 
 				}
 			}
 			result.setIndividual(i, individual);
 		}
 		return result;
 	}
-	
-	
 
+	public int getnGene() {
+		return nGene;
+	}
 }

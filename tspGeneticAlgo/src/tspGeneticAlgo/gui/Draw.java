@@ -37,24 +37,31 @@ public class Draw extends JPanel {
 			routeList = route.getRoute();
 			Graphics2D g2 = (Graphics2D)g;
 			for (int i = 0; i < routeList.size(); i ++ ) {
-				int scale = 5;
+				int scale = 3;
 				if (i == routeList.size() - 1) {
 					g2.setColor(Color.RED);
-					g2.drawLine(routeList.get(i).getX() * scale + 54, routeList.get(i).getY() * scale + 54, routeList.get(0).getX() * scale + 54,routeList.get(0).getY() * scale + 54);
+					g2.drawLine(routeList.get(i).getX() * scale, routeList.get(i).getY() * scale, routeList.get(0).getX() * scale ,routeList.get(0).getY() * scale);
 					g2.setColor(Color.BLUE);
-					g2.fillOval(routeList.get(i).getX() * scale + 50, routeList.get(i).getY() * scale + 50, 8, 8);
-					
+					g2.fillOval(routeList.get(i).getX() * scale - 15, routeList.get(i).getY() * scale - 15, 30, 30);
+					g2.setColor(Color.WHITE);
+//					g2.drawString( route.getIndividual().getChromosome().get(i)+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
+					g2.drawString(i+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
 				}
 				else {
 					g2.setColor(Color.RED);
-					g2.drawLine(routeList.get(i).getX() * scale + 54, routeList.get(i).getY() * scale + 54, routeList.get(i + 1).getX() * scale + 54,routeList.get(i + 1).getY() * scale + 54);
+					g2.drawLine(routeList.get(i).getX() * scale, routeList.get(i).getY() * scale, routeList.get(i + 1).getX() * scale,routeList.get(i + 1).getY() * scale);
 					if (i == 0) {
 						g2.setColor(Color.ORANGE);
-						g2.fillOval(routeList.get(i).getX() * scale + 50 , routeList.get(i).getY() * scale + 50, 8, 8);
+						g2.fillOval(routeList.get(i).getX() * scale - 15, routeList.get(i).getY() * scale - 15, 35, 35);
+						g2.setColor(Color.BLACK);
+//						g2.drawString( route.getIndividual().getChromosome().get(i)+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
+						g2.drawString(i+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
 					}
 					else {
 						g2.setColor(Color.BLUE);
-						g2.fillOval(routeList.get(i).getX() * scale + 50 , routeList.get(i).getY() * scale + 50, 8, 8);
+						g2.fillOval(routeList.get(i).getX() * scale - 15, routeList.get(i).getY() * scale - 15, 30, 30);
+						g2.setColor(Color.WHITE);
+						g2.drawString(i+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
 					}
 				}
 			}
