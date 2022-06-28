@@ -4,21 +4,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Individual {
-	private ArrayList<Integer> chromosome = new ArrayList<Integer>();;
+	private ArrayList<Integer> chromosome;
 	private double fitness;
 	public static final Comparator<Individual> COMPARE_BY_FITNESS = new IndividualComparatorByFitness();
+
+//	============= Constructor ============
 	public Individual(ArrayList<Integer> chromosome) {
 		this.chromosome = chromosome;
 		// TODO Auto-generated constructor stub
 	}
-	public Individual(int chromosomeLength) {
-		ArrayList<Integer> individual = new ArrayList<Integer>();
-		for (int gene = 0; gene < chromosomeLength; gene++) {
+
+	public Individual(int nGene) {
+		ArrayList<Integer> individual = new ArrayList<>();
+		for (int gene = 0; gene < nGene; gene++) {
 			individual.add(gene);
 		}
-		
 		this.chromosome = individual;
 	}
+//	============== Get & Set ==============
 	public ArrayList<Integer> getChromosome() {
 		return this.chromosome;
 	}
@@ -37,6 +40,8 @@ public class Individual {
 	public int getLength() {
 		return this.chromosome.size();
 	}
+
+
 	public boolean containElement(int value) {
 		for (int e: this.chromosome) {
 			if (e == value) {
@@ -45,17 +50,14 @@ public class Individual {
 		}
 		return false;
 	}
-	public String toString() {
-		String res = "";
-		for (Integer i : chromosome) {
-			res += i;
-			res += " - ";
-		}
-		res += "0.";
-		return res;
-	}
-	
-	
-	
 
+	public String toString() {
+		StringBuilder res = new StringBuilder();
+		for (Integer i : chromosome) {
+			res.append(i);
+			res.append(" - ");
+		}
+		res.append("0.");
+		return res.toString();
+	}
 }

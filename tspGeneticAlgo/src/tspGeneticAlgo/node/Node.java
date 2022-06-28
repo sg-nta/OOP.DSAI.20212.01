@@ -17,8 +17,6 @@ public class Node {
 	public double getDistance(Node node) {
 		double deltaXSq = Math.pow((node.getX() - this.getX()), 2);
 		double deltaYSq = Math.pow((node.getY() - this.getY()), 2);
-
-		double distance = Math.sqrt(Math.abs(deltaXSq + deltaYSq));
-		return distance;
+		return Math.sqrt(Math.abs(deltaXSq + deltaYSq));
 	}
 }

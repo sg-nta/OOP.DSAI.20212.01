@@ -9,25 +9,24 @@ import tspGeneticAlgo.population.Population;
 import tspGeneticAlgo.route.Route;
 
 public class TSP {
-	private final static int numNodes = 100;
-	private final static int maxGenerations = 10000; 
+	private final static int maxGenerations = 1000;
 	private static Node[] nodes;
 	private static Population population;
 	private static GA ga;
 	private static Route route;
 	public static void main (String [] args) {
 		List<Individual> sortedPopulation;
-		nodes = new Node[numNodes];
-		for (int i = 0; i < numNodes; i++) {
+
+		
+		ga = new GA(100, 10, 0.001, 0.9, 7);
+		population = ga.initPopulation();
+
+		nodes = new Node[ga.getnGene()];
+		for (int i = 0; i < ga.getnGene(); i++) {
 			int xPos = (int) (100 * Math.random());
 			int yPos = (int) (100 * Math.random());
-
 			nodes[i] = new Node(xPos, yPos);
 		}
-		
-		ga = new GA(100, 0.001, 0.9, 7, 5);
-		population = ga.initPopulation(numNodes);
-
 		ga.updateFitness(population, nodes);
 		sortedPopulation = population.sortByFitness();
 		route = new Route(sortedPopulation.get(0), nodes);
@@ -49,7 +48,6 @@ public class TSP {
 		sortedPopulation = population.sortByFitness();
 		Route route = new Route(sortedPopulation.get(0), nodes);
 		System.out.println("Best distance: " + route.totalDistance());
+		System.out.println("Route: " + sortedPopulation.get(0));
 	}
-	
-
 }

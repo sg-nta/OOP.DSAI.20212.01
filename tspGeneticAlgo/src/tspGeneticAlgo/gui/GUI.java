@@ -33,8 +33,6 @@ public class GUI extends JFrame{
 	private int generation = 1;
 	private Population population;
 	private Timer time;
-	private JButton btnSubmit;
-	private JButton btnStop;
 	private int populationSize;
 	private int numGens;
 	private int numNodes;
@@ -46,11 +44,11 @@ public class GUI extends JFrame{
 	public GUI() {
 		Container cp = getContentPane();
 		cp.setLayout(new BorderLayout());
-		
 		setTitle("Genetic Algorithm for TSP");
 		cp.add(createEast(), BorderLayout.EAST);
 		cp.add(draw, BorderLayout.CENTER);
-		setSize(800, 600);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -71,7 +69,7 @@ public class GUI extends JFrame{
 		east.add(new JLabel("Number of nodes: "), gbc);
 		gbc.gridy += 1;
 		east.add(new JLabel("Number of survivals: "), gbc);
-		gbc.gridy += 3;
+		gbc.gridy += 4;
 		east.add(new JLabel("Generations: "), gbc);
 		gbc.gridy += 1;
 		east.add(new JLabel("Best Distance: "), gbc);
@@ -94,8 +92,8 @@ public class GUI extends JFrame{
 		numSurvivalText = new JTextField(10);
 		east.add(numSurvivalText, gbc);
 		gbc.gridy+= 1;
-		
-		btnSubmit = new JButton("Enter");
+
+		JButton btnSubmit = new JButton("Enter");
 		btnSubmit.addActionListener(new ActionListener() {
 
 			@Override
@@ -109,24 +107,23 @@ public class GUI extends JFrame{
 					numGens = Integer.parseInt(numGensText.getText()) ;
 					numNodes = Integer.parseInt(numNodesText.getText()) ;
 					numSurvival = Integer.parseInt(numSurvivalText.getText());
-	
-					Node nodes[] = new Node[numNodes];
+
+					Node[] nodes = new Node[numNodes];
 					for (int i = 0; i < numNodes; i++) {
-						int xPos = (int) (100 * Math.random());
-						int yPos = (int) (100 * Math.random());
-	
+						int xPos = (int) (200 * Math.random() + 15);
+						int yPos = (int) (200 * Math.random() + 15);
+
 						nodes[i] = new Node(xPos, yPos);
 					}
-					
-					GA ga = new GA(populationSize, 0.001, 0.9, numSurvival, 5);
-					population = ga.initPopulation(numNodes);
+
+					GA ga = new GA(populationSize, numNodes, 0.001, 0.9, numSurvival);
+					population = ga.initPopulation();
 					ga.updateFitness(population, nodes);
 					sortedPopulation = population.sortByFitness();
-					Route startRoute = new Route(sortedPopulation.get(0), nodes);
-					prevRoute = startRoute;
-					
+					prevRoute = new Route(sortedPopulation.get(0), nodes);
+
 					time = new Timer(20, new ActionListener() {
-						
+
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							sortedPopulation = population.sortByFitness();
@@ -134,11 +131,10 @@ public class GUI extends JFrame{
 							System.out.println("G"+generation+" Best distance: " + route.totalDistance());
 							generations.setText(String.valueOf(generation));
 							bestDistance.setText(String.valueOf((double)Math.round(route.totalDistance()*100)/100));
-							population = ga.crossOver(population);
+//							population = ga.crossOver(population);
 							population = ga.mutation(population);
 							ga.updateFitness(population, nodes);
-							if (prevRoute.getRoute().equals(route.getRoute()) == false) {
-	
+							if (!prevRoute.getRoute().equals(route.getRoute())) {
 								draw.setRoute(route);
 								draw.paint(getGraphics());
 							}
@@ -148,30 +144,35 @@ public class GUI extends JFrame{
 								time.stop();
 								status = 0;
 							}
-	
-	
-							
 						}
-						
 					});
 					time.start();
 				}
 			}
-			
 		});
 		east.add(btnSubmit, gbc);
 		gbc.gridy++;
-		
-		btnStop = new JButton("Stop");
-		btnStop.addActionListener(new ActionListener() {
 
+		JButton btnStop = new JButton("Stop");
+		btnStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				status = 0;
 			}
-			
 		});
 		east.add(btnStop, gbc);
+		gbc.gridy++;
+
+
+		JButton btnRestart = new JButton("Restart");
+		btnRestart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new GUI();
+				dispose();
+			}
+		});
+		east.add(btnRestart, gbc);
 		gbc.gridy++;
 
 		generations = new JTextField(10);
@@ -184,9 +185,6 @@ public class GUI extends JFrame{
 		east.add(bestDistance, gbc);
 		
 		return east;
-		
 	}
-	
-
 }
 	
