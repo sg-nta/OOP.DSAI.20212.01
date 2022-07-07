@@ -26,7 +26,16 @@ public class GUI extends JFrame{
 	private int generation = 1;
 	private Population population;
 	private Timer time;
+<<<<<<< HEAD
 
+=======
+	private JButton btnSubmit;
+	private JButton btnStop;
+	private int populationSize;
+	private int numGens;
+	private int numNodes;
+	private int numSurvival;
+>>>>>>> main
 	private int status = 0;
 	private Draw draw = new Draw();
 	private List<Individual> sortedPopulation;
@@ -34,11 +43,16 @@ public class GUI extends JFrame{
 	public GUI() {
 		Container cp = getContentPane();
 		cp.setLayout(new BorderLayout());
+		
 		setTitle("Genetic Algorithm for TSP");
 		cp.add(createEast(), BorderLayout.EAST);
 		cp.add(draw, BorderLayout.CENTER);
+<<<<<<< HEAD
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1080, 720);
+=======
+		setSize(800, 600);
+>>>>>>> main
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -56,6 +70,7 @@ public class GUI extends JFrame{
 		gbc.gridy = 0;
 		east.add(new JLabel(""), gbc);
 		gbc.gridy += 1;
+<<<<<<< HEAD
 
 //		==== Create general Font and Dimension=====
 		Font myFont = new Font("Arial", 0, 18);
@@ -109,6 +124,38 @@ public class GUI extends JFrame{
 		gbc.gridy++;
 
 		JButton btnSubmit = new JButton("Enter");
+=======
+		east.add(new JLabel("Number of generations: "), gbc);
+		gbc.gridy += 1;
+		east.add(new JLabel("Number of nodes: "), gbc);
+		gbc.gridy += 1;
+		east.add(new JLabel("Number of survivals: "), gbc);
+		gbc.gridy += 3;
+		east.add(new JLabel("Generations: "), gbc);
+		gbc.gridy += 1;
+		east.add(new JLabel("Best Distance: "), gbc);
+
+		gbc.gridx++;
+		gbc.gridy = 0;
+		
+		populationSizeText = new JTextField(10);
+		east.add(populationSizeText, gbc);
+		gbc.gridy+= 1;
+		
+		numGensText = new JTextField(10);
+		east.add(numGensText, gbc);
+		gbc.gridy+= 1;
+		
+		numNodesText = new JTextField(10);
+		east.add(numNodesText, gbc);
+		gbc.gridy+= 1;
+		
+		numSurvivalText = new JTextField(10);
+		east.add(numSurvivalText, gbc);
+		gbc.gridy+= 1;
+		
+		btnSubmit = new JButton("Enter");
+>>>>>>> main
 		btnSubmit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -117,6 +164,7 @@ public class GUI extends JFrame{
 					lblgenerations.setText("");
 					bestDistance.setText("");
 					generation = 1;
+<<<<<<< HEAD
 					int populationSize = Integer.parseInt(populationSizeText.getText()) ;
 					int numGens = Integer.parseInt(numGensText.getText()) ;
 					int numNodes = Integer.parseInt(numNodesText.getText()) ;
@@ -132,12 +180,30 @@ public class GUI extends JFrame{
 
 					GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival);
 					population = ga.initPopulation();
+=======
+					populationSize = Integer.parseInt(populationSizeText.getText()) ;
+					numGens = Integer.parseInt(numGensText.getText()) ;
+					numNodes = Integer.parseInt(numNodesText.getText()) ;
+					numSurvival = Integer.parseInt(numSurvivalText.getText());
+	
+					Node nodes[] = new Node[numNodes];
+					for (int i = 0; i < numNodes; i++) {
+						int xPos = (int) (100 * Math.random());
+						int yPos = (int) (100 * Math.random());
+	
+						nodes[i] = new Node(xPos, yPos);
+					}
+					
+					GA ga = new GA(populationSize, 0.001, 0.9, numSurvival, 5);
+					population = ga.initPopulation(numNodes);
+>>>>>>> main
 					ga.updateFitness(population, nodes);
 					sortedPopulation = population.sortByFitness();
-					prevRoute = new Route(sortedPopulation.get(0), nodes);
-
+					Route startRoute = new Route(sortedPopulation.get(0), nodes);
+					prevRoute = startRoute;
+					
 					time = new Timer(20, new ActionListener() {
-
+						
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							sortedPopulation = population.sortByFitness();
@@ -148,7 +214,8 @@ public class GUI extends JFrame{
 							population = ga.crossOver(population);
 							population = ga.mutation(population);
 							ga.updateFitness(population, nodes);
-							if (!prevRoute.getRoute().equals(route.getRoute())) {
+							if (prevRoute.getRoute().equals(route.getRoute()) == false) {
+	
 								draw.setRoute(route);
 								draw.paint(getGraphics());
 							}
@@ -159,16 +226,25 @@ public class GUI extends JFrame{
 								status = 0;
 								System.out.println(route.getIndividual());
 							}
+	
+	
+							
 						}
+<<<<<<< HEAD
 
+=======
+						
+>>>>>>> main
 					});
 					time.start();
 				}
 			}
+			
 		});
 		btnSubmit.setPreferredSize(btnDim);
 		btnSubmit.setForeground(lblColor);
 		east.add(btnSubmit, gbc);
+<<<<<<< HEAD
 		gbc.gridy ++;
 
 		JButton btnHelp = new JButton("Help");
@@ -275,17 +351,25 @@ public class GUI extends JFrame{
 
 
 		JButton btnStop = new JButton("Stop");
+=======
+		gbc.gridy++;
+		
+		btnStop = new JButton("Stop");
+>>>>>>> main
 		btnStop.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				status = 0;
 			}
+			
 		});
 		btnStop.setPreferredSize(btnDim);
 		btnStop.setForeground(new Color(166,75,42));
 		east.add(btnStop, gbc);
 		gbc.gridy++;
 
+<<<<<<< HEAD
 
 		JButton btnRestart = new JButton("Restart");
 		btnRestart.addActionListener(new ActionListener() {
@@ -305,6 +389,11 @@ public class GUI extends JFrame{
 		lblgenerations.setForeground(new Color(215,168 ,110));
 		lblgenerations.setFont(new Font("Arial", Font.ITALIC, 20));
 		east.add(lblgenerations, gbc);
+=======
+		generations = new JTextField(10);
+		generations.setEditable(false);
+		east.add(generations, gbc);
+>>>>>>> main
 		gbc.gridy++;
 
 		bestDistance = new JLabel("Unknown", 0);
@@ -315,6 +404,9 @@ public class GUI extends JFrame{
 		east.add(bestDistance, gbc);
 
 		return east;
+		
 	}
+	
+
 }
 	

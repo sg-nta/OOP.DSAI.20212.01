@@ -40,6 +40,7 @@ public class Draw extends JPanel {
 			Color initColor = new Color(63, 78, 79);
 			Graphics2D g2 = (Graphics2D)g;
 			for (int i = 0; i < routeList.size(); i ++ ) {
+<<<<<<< HEAD
 				int scale = 6;
 				if (i == routeList.size() - 1) {
 					g2.setColor(lineColor);
@@ -60,6 +61,26 @@ public class Draw extends JPanel {
 						g2.setColor(cityColor);
 						g2.fillOval(routeList.get(i).getX() * scale - 5, routeList.get(i).getY() * scale - 5, 10, 10);
 
+=======
+				int scale = 5;
+				if (i == routeList.size() - 1) {
+					g2.setColor(Color.RED);
+					g2.drawLine(routeList.get(i).getX() * scale + 54, routeList.get(i).getY() * scale + 54, routeList.get(0).getX() * scale + 54,routeList.get(0).getY() * scale + 54);
+					g2.setColor(Color.BLUE);
+					g2.fillOval(routeList.get(i).getX() * scale + 50, routeList.get(i).getY() * scale + 50, 8, 8);
+					
+				}
+				else {
+					g2.setColor(Color.RED);
+					g2.drawLine(routeList.get(i).getX() * scale + 54, routeList.get(i).getY() * scale + 54, routeList.get(i + 1).getX() * scale + 54,routeList.get(i + 1).getY() * scale + 54);
+					if (i == 0) {
+						g2.setColor(Color.ORANGE);
+						g2.fillOval(routeList.get(i).getX() * scale + 50 , routeList.get(i).getY() * scale + 50, 8, 8);
+					}
+					else {
+						g2.setColor(Color.BLUE);
+						g2.fillOval(routeList.get(i).getX() * scale + 50 , routeList.get(i).getY() * scale + 50, 8, 8);
+>>>>>>> main
 					}
 				}
 			}
