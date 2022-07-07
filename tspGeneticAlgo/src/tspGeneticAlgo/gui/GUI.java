@@ -248,12 +248,12 @@ public class GUI extends JFrame{
 		east.add(populationSizeText, gbc);
 		gbc.gridy+= 1;
 
-		numGensText = new JTextField("600", 10);
+		numGensText = new JTextField("2000", 10);
 		numGensText.setPreferredSize(tfDim);
 		east.add(numGensText, gbc);
 		gbc.gridy+= 1;
 
-		numNodesText = new JTextField("50", 10);
+		numNodesText = new JTextField("100", 10);
 		numNodesText.setPreferredSize(tfDim);
 		east.add(numNodesText, gbc);
 		gbc.gridy+= 1;
