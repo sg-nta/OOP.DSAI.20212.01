@@ -208,9 +208,9 @@ public class GUI extends JFrame{
 				close.setPreferredSize(new Dimension(100, 30));
 				south.add(close);
 				f.add(south, BorderLayout.SOUTH);
-
-				f.setSize(720, 800);
-				f.setLocation(400, 300);
+				f.setTitle("Help");
+				f.setSize(720, 760);
+				f.setLocation(360, 70);
 				f.setVisible(true);
 			}
 		});
