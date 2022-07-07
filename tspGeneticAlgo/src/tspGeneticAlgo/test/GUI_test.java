@@ -7,6 +7,5 @@ public class GUI_test {
 	public static void main (String[] args) {
 		
 	}
-
 }	
 
