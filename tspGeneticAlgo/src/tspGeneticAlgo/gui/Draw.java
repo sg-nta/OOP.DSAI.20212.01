@@ -35,40 +35,37 @@ public class Draw extends JPanel {
 		super.paint(g);
 		if (status == 1) {
 			routeList = route.getRoute();
+			Color cityColor = new Color(166,75,42);
+			Color lineColor = new Color(215, 168, 110);
+			Color initColor = new Color(63, 78, 79);
 			Graphics2D g2 = (Graphics2D)g;
 			for (int i = 0; i < routeList.size(); i ++ ) {
-				int scale = 3;
+				int scale = 6;
 				if (i == routeList.size() - 1) {
-					g2.setColor(Color.RED);
+					g2.setColor(lineColor);
 					g2.drawLine(routeList.get(i).getX() * scale, routeList.get(i).getY() * scale, routeList.get(0).getX() * scale ,routeList.get(0).getY() * scale);
-					g2.setColor(Color.BLUE);
-					g2.fillOval(routeList.get(i).getX() * scale - 15, routeList.get(i).getY() * scale - 15, 30, 30);
-					g2.setColor(Color.WHITE);
-//					g2.drawString( route.getIndividual().getChromosome().get(i)+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
-					g2.drawString(i+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
+					g2.setColor(cityColor);
+					g2.fillOval(routeList.get(i).getX() * scale - 5 , routeList.get(i).getY() * scale - 5, 10, 10);
 				}
 				else {
-					g2.setColor(Color.RED);
+					g2.setColor(lineColor);
 					g2.drawLine(routeList.get(i).getX() * scale, routeList.get(i).getY() * scale, routeList.get(i + 1).getX() * scale,routeList.get(i + 1).getY() * scale);
 					if (i == 0) {
-						g2.setColor(Color.ORANGE);
-						g2.fillOval(routeList.get(i).getX() * scale - 15, routeList.get(i).getY() * scale - 15, 35, 35);
-						g2.setColor(Color.BLACK);
-//						g2.drawString( route.getIndividual().getChromosome().get(i)+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
-						g2.drawString(i+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
+						g2.setColor(initColor);
+						g2.fillOval(routeList.get(i).getX() * scale - 6, routeList.get(i).getY() * scale - 14, 20, 20);
+						g2.setColor(Color.WHITE);
+						g2.drawString("S", routeList.get(i).getX() * scale , routeList.get(i).getY() * scale);
 					}
 					else {
-						g2.setColor(Color.BLUE);
-						g2.fillOval(routeList.get(i).getX() * scale - 15, routeList.get(i).getY() * scale - 15, 30, 30);
-						g2.setColor(Color.WHITE);
-						g2.drawString(i+"", routeList.get(i).getX() * scale, routeList.get(i).getY() * scale);
+						g2.setColor(cityColor);
+						g2.fillOval(routeList.get(i).getX() * scale - 5, routeList.get(i).getY() * scale - 5, 10, 10);
+
 					}
 				}
 			}
 		}
 		
 	}
-
 	public void setPrefferredSize(Dimension d){
 		super.setPreferredSize(d);
 	}

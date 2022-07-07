@@ -13,6 +13,7 @@ public class Route {
 		for (int i = 0; i < nodes.length; i++ ) {
 			this.route.add(nodes[chromosome.get(i)]);
 		}
+		this.individual = individual;
 	}
 
 	public ArrayList<Node> getRoute() {

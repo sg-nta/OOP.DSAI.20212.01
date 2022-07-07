@@ -19,7 +19,7 @@ public class Population {
 
 	public Population(int populationSize, int chromosomeLength) {
 		this.population = new ArrayList<Individual>();
-		for (int individualCount = 0; individualCount < populationSize; individualCount++) {
+		for (int individualCount = 1; individualCount < populationSize; individualCount++) {
 			Individual individual = new Individual(chromosomeLength);
 			this.population.add(individual);
 		}
@@ -44,4 +44,5 @@ public class Population {
 		Collections.sort(population, Individual.COMPARE_BY_FITNESS);
 		return population;
 	}
+
 }
