@@ -9,12 +9,12 @@ public class Instruction {
                 "Before make any changes, we highly recommend that you should read about Genetic Algorithm at:<br/>" +
                 "<i>https://en.wikipedia.org/wiki/Genetic_algorithm</i><br/>"+
                 "<h2>There are 6 components you need to consider in GA:</h2>"+
-                "- <b>\"Population\"</b> size is the number of individual typically contains several hundreds or thousands of<br/>" +
+                "- <b>\"Population size\"</b> is the number of individuals, typically contains several hundreds or thousands of<br/>" +
                 "possible solutions.<br/>"+
                 "- <b>\"Total generations\"</b> is the life span of the population, in this case, it is the number of iterations<br/>" +
                 "or epochs that our application will do the Selection - Crossover - Mutation on the population.<br/>"+
-                "- <b>\"Citites\"</b> is the number of cities, also the number of nodes. Each node contains cartesian coordinates<br/>" +
-                "x and y and the distance and the distance between 2 nodes is Euclidean distance.<br/>"+
+                "- <b>\"Cities\"</b> is the number of cities, also the number of nodes. Each node contains cartesian coordinates<br/>" +
+                "x and y and the distance between 2 nodes is calculated as Euclidean distance.<br/>"+
                 "- <b>\"Elitism\"</b> is the number of the best and fittest individuals in current generation that is kept<br/>" +
                 "and transferred to the next generation.<br/>"+
                 "- <b>\"Crossover rate\"</b> is the rate or the probability that 2 chromosomes may exchange part of their genes<br/>"+
