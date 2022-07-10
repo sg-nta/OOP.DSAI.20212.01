@@ -1,4 +1,4 @@
-package tspGeneticAlgo.individual;
+package tspGeneticAlgo.components;
 
 import java.util.Comparator;
 

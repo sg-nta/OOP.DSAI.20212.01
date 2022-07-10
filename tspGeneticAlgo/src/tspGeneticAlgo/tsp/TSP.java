@@ -2,11 +2,11 @@ package tspGeneticAlgo.tsp;
 
 import java.util.List;
 
+import tspGeneticAlgo.components.Individual;
+import tspGeneticAlgo.components.Node;
+import tspGeneticAlgo.components.Population;
+import tspGeneticAlgo.components.Route;
 import tspGeneticAlgo.ga.GA;
-import tspGeneticAlgo.individual.Individual;
-import tspGeneticAlgo.node.Node;
-import tspGeneticAlgo.population.Population;
-import tspGeneticAlgo.route.Route;
 
 public class TSP {
 	private final static int numNodes = 100;
@@ -24,8 +24,7 @@ public class TSP {
 
 			nodes[i] = new Node(xPos, yPos);
 		}
-
-		ga = new GA(1000, 100, 0.05, 0.9, 7);
+		ga = new GA(200, 100, 0.05, 0.9, 7, 10);
 		population = ga.initPopulation();
 
 		ga.updateFitness(population, nodes);
@@ -39,8 +38,7 @@ public class TSP {
 			route = new Route(sortedPopulation.get(0), nodes);
 			System.out.println("G"+generation+" Best distance: " + route.totalDistance());
 			//System.out.println("Best route: " + sortedPopulation.get(0).toString());
-			population = ga.crossOver(population);
-			population = ga.mutation(population);
+			population = ga.execute(population);
 			ga.updateFitness(population, nodes);
 			generation ++;
 		}
