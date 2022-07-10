@@ -1,9 +1,6 @@
-package tspGeneticAlgo.route;
+package tspGeneticAlgo.components;
 
 import java.util.ArrayList;
-
-import tspGeneticAlgo.individual.Individual;
-import tspGeneticAlgo.node.Node;
 
 public class Route {
 	private ArrayList<Node> route = new ArrayList<Node>() ;

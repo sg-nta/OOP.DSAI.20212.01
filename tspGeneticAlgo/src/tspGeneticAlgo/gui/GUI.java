@@ -6,11 +6,11 @@ import java.util.List;
 
 import javax.swing.*;
 
+import tspGeneticAlgo.components.Individual;
+import tspGeneticAlgo.components.Node;
+import tspGeneticAlgo.components.Population;
+import tspGeneticAlgo.components.Route;
 import tspGeneticAlgo.ga.GA;
-import tspGeneticAlgo.individual.Individual;
-import tspGeneticAlgo.node.Node;
-import tspGeneticAlgo.population.Population;
-import tspGeneticAlgo.route.Route;
 
 public class GUI extends JFrame{
 //	private Route route;
@@ -123,20 +123,16 @@ public class GUI extends JFrame{
 					int numSurvival = Integer.parseInt(numSurvivalText.getText());
 					float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
 					float rOfMutation = Float.parseFloat(rMutationText.getText());
-					Node[] nodes = new Node[numNodes];
-					for (int i = 0; i < numNodes; i++) {
-						int xPos = (int) (100 * Math.random() + 10);
-						int yPos = (int) (100 * Math.random() + 10);
-						nodes[i] = new Node(xPos, yPos);
-					}
+					
 
-					GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival);
+					GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, 10);
+					Node[] nodes = ga.generateNodes();
 					population = ga.initPopulation();
 					ga.updateFitness(population, nodes);
 					sortedPopulation = population.sortByFitness();
 					prevRoute = new Route(sortedPopulation.get(0), nodes);
 
-					time = new Timer(20, new ActionListener() {
+					time = new Timer(400, new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -145,16 +141,18 @@ public class GUI extends JFrame{
 							System.out.println("G"+generation+" Best distance: " + route.totalDistance());
 							lblgenerations.setText(String.valueOf(generation));
 							bestDistance.setText(String.valueOf((double)Math.round(route.totalDistance()*100)/100));
-							population = ga.crossOver(population);
-							population = ga.mutation(population);
+							population = ga.execute(population);
 							ga.updateFitness(population, nodes);
 							if (!prevRoute.getRoute().equals(route.getRoute())) {
-								draw.setRoute(route);
+								draw.setRoute(prevRoute, route);
 								draw.paint(getGraphics());
 							}
 							generation ++;
 							prevRoute = route;
 							if ((generation == numGens + 1) || (status == 0)){
+								draw.setRoute(prevRoute, route);
+								draw.paint(getGraphics());
+
 								time.stop();
 								status = 0;
 								System.out.println(route.getIndividual());
@@ -243,7 +241,7 @@ public class GUI extends JFrame{
 		gbc.gridy+= 1;
 
 
-		populationSizeText = new JTextField("1000",10);
+		populationSizeText = new JTextField("100",10);
 		populationSizeText.setPreferredSize(tfDim);
 		east.add(populationSizeText, gbc);
 		gbc.gridy+= 1;
@@ -253,12 +251,12 @@ public class GUI extends JFrame{
 		east.add(numGensText, gbc);
 		gbc.gridy+= 1;
 
-		numNodesText = new JTextField("100", 10);
+		numNodesText = new JTextField("50", 10);
 		numNodesText.setPreferredSize(tfDim);
 		east.add(numNodesText, gbc);
 		gbc.gridy+= 1;
 
-		numSurvivalText = new JTextField("10",10);
+		numSurvivalText = new JTextField("5",10);
 		numSurvivalText.setPreferredSize(tfDim);
 		east.add(numSurvivalText, gbc);
 		gbc.gridy+= 1;
@@ -278,7 +276,7 @@ public class GUI extends JFrame{
 		btnStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = 0;
+				status = 1 - status;
 			}
 		});
 		btnStop.setPreferredSize(btnDim);

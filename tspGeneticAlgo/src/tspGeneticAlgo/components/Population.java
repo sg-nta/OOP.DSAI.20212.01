@@ -1,9 +1,8 @@
-package tspGeneticAlgo.population;
+package tspGeneticAlgo.components;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import tspGeneticAlgo.individual.Individual;
 
 
 public class Population {

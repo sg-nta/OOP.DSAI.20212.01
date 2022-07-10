@@ -1,4 +1,4 @@
-package tspGeneticAlgo.node;
+package tspGeneticAlgo.components;
 
 public class Node {
 	private int x_pos;
