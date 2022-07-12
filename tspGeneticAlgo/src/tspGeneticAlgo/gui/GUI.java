@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import tspGeneticAlgo.components.Individual;
 import tspGeneticAlgo.components.Node;
@@ -42,7 +43,7 @@ public class GUI extends JFrame{
 		cp.add(draw, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1080, 770);
+		setSize(1080, 720);
 		setTitle("Genetic Algorithm for TSP");
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -63,10 +64,11 @@ public class GUI extends JFrame{
 
 //		==== Create general Font and Dimension=====
 		Font myFont = new Font("Arial", Font.PLAIN, 18);
-		Dimension lblDim = new Dimension(150, 18);
-		Dimension tfDim = new Dimension(80, 50);
-		Dimension btnDim = new Dimension(120, 50);
+		Dimension lblDim = new Dimension(150, 40);
+		Dimension tfDim = new Dimension(120, 30);
+		Dimension btnDim = new Dimension(120, 40);
 		Color lblColor = new Color(63, 78, 79);
+
 //		=================================================
 		ButtonListener btnListener = new ButtonListener();
 //		=================================================
@@ -119,7 +121,7 @@ public class GUI extends JFrame{
 		lblTournament.setForeground(lblColor);
 		east.add(lblTournament, gbc);
 		gbc.gridy++;
-		
+
 		JLabel lblSpeed = new JLabel("Speed: ", SwingConstants.LEFT);
 		lblSpeed.setPreferredSize(lblDim);
 		lblSpeed.setFont(myFont);
@@ -163,37 +165,37 @@ public class GUI extends JFrame{
 		east.add(nameProgram);
 		gbc.gridy++;
 
-		populationSizeText = new JTextField("1000",10);
+		populationSizeText = new RoundJTextField("1000",8);
 		populationSizeText.setPreferredSize(tfDim);
 		east.add(populationSizeText, gbc);
 		gbc.gridy++;
 
-		numGensText = new JTextField("2000", 10);
+		numGensText = new RoundJTextField("2000", 8);
 		numGensText.setPreferredSize(tfDim);
 		east.add(numGensText, gbc);
 		gbc.gridy++;
 
-		numNodesText = new JTextField("50", 10);
+		numNodesText = new RoundJTextField("50", 8);
 		numNodesText.setPreferredSize(tfDim);
 		east.add(numNodesText, gbc);
 		gbc.gridy++;
 
-		numSurvivalText = new JTextField("5",10);
+		numSurvivalText = new RoundJTextField("5",8);
 		numSurvivalText.setPreferredSize(tfDim);
 		east.add(numSurvivalText, gbc);
 		gbc.gridy++;
 
-		rCrossOverText = new JTextField("0.9",10);
+		rCrossOverText = new RoundJTextField("0.9",8);
 		rCrossOverText.setPreferredSize(tfDim);
 		east.add(rCrossOverText, gbc);
 		gbc.gridy++;
 
-		rMutationText = new JTextField("0.05",10);
+		rMutationText = new RoundJTextField("0.05",8);
 		rMutationText.setPreferredSize(tfDim);
 		east.add(rMutationText, gbc);
 		gbc.gridy++;
-		
-		sTournamentText = new JTextField("10",10);
+
+		sTournamentText = new RoundJTextField("10",8);
 		sTournamentText.setPreferredSize(tfDim);
 		east.add(sTournamentText, gbc);
 		gbc.gridy++;
@@ -201,7 +203,7 @@ public class GUI extends JFrame{
 		String[] speedType = new String[]{"Fast", "Medium", "Slow"};
 		cbSpeed = new JComboBox(speedType);
 		cbSpeed.addActionListener(btnListener);
-		cbSpeed.setPreferredSize(btnDim);
+		cbSpeed.setPreferredSize(tfDim);
 
 		east.add(cbSpeed, gbc);
 		gbc.gridy++;
@@ -257,45 +259,52 @@ public class GUI extends JFrame{
 						lblgenerations.setText("");
 						bestDistance.setText("");
 						generation = 1;
-						int populationSize = Integer.parseInt(populationSizeText.getText()) ;
-						int numGens = Integer.parseInt(numGensText.getText()) ;
-						int numNodes = Integer.parseInt(numNodesText.getText()) ;
-						int numSurvival = Integer.parseInt(numSurvivalText.getText());
-						float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
-						float rOfMutation = Float.parseFloat(rMutationText.getText());
-						int sOfTournament = Integer.parseInt(sTournamentText.getText());
-						GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, sOfTournament);
-						Node[] nodes = ga.generateNodes();
-						population = ga.initPopulation();
-						ga.updateFitness(population, nodes);
-						sortedPopulation = population.sortByFitness();
-						prevRoute = new Route(sortedPopulation.get(0), nodes);
-
-						time = new Timer(speed, e -> {
-							sortedPopulation = population.sortByFitness();
-							route = new Route(sortedPopulation.get(0), nodes);
-							System.out.println("G"+generation+" Best distance: " + route.totalDistance());
-							lblgenerations.setText(String.valueOf(generation));
-							bestDistance.setText(String.valueOf((double)Math.round(route.totalDistance()*100)/100));
-							population = ga.execute(population);
+						try {
+							int populationSize = Integer.parseInt(populationSizeText.getText());
+							int numGens = Integer.parseInt(numGensText.getText());
+							int numNodes = Integer.parseInt(numNodesText.getText());
+							int numSurvival = Integer.parseInt(numSurvivalText.getText());
+							float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
+							float rOfMutation = Float.parseFloat(rMutationText.getText());
+							int sOfTournament = Integer.parseInt(sTournamentText.getText());
+							GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, sOfTournament);
+							Node[] nodes = ga.generateNodes();
+							population = ga.initPopulation();
 							ga.updateFitness(population, nodes);
-							if (!prevRoute.getRoute().equals(route.getRoute())) {
-								draw.setRoute(prevRoute, route);
-								draw.paint(getGraphics());
-							}
-							generation ++;
-							prevRoute = route;
-							if ((generation == numGens + 1) || (status == 0)){
-								draw.setRoute(prevRoute, route);
-								draw.paint(getGraphics());
+							sortedPopulation = population.sortByFitness();
+							prevRoute = new Route(sortedPopulation.get(0), nodes);
 
-								time.stop();
-								status = 0;
-								System.out.println(route.getIndividual());
+							time = new Timer(speed, e -> {
+								sortedPopulation = population.sortByFitness();
+								route = new Route(sortedPopulation.get(0), nodes);
+								System.out.println("G" + generation + " Best distance: " + route.totalDistance());
+								lblgenerations.setText(String.valueOf(generation));
+								bestDistance.setText(String.valueOf((double) Math.round(route.totalDistance() * 100) / 100));
+								population = ga.execute(population);
+								ga.updateFitness(population, nodes);
+								if (!prevRoute.getRoute().equals(route.getRoute())) {
+									draw.setRoute(prevRoute, route);
+									draw.paint(getGraphics());
+								}
+								generation++;
+								prevRoute = route;
+								if ((generation == numGens + 1) || (status == 0)) {
+									draw.setRoute(prevRoute, route);
+									draw.paint(getGraphics());
+
+									time.stop();
+									status = 0;
+									System.out.println(route.getIndividual());
+								}
+							});
+							time.start();
+						} catch (Exception e){
+							int option = JOptionPane.showConfirmDialog(new JFrame(), "Invalid Input","Error",JOptionPane.DEFAULT_OPTION);
+							if (option == JOptionPane.YES_OPTION) {
+								new GUI();
 							}
-						});
-						time.start();
-					}
+						}
+				}
 					break;
 				case "Help":
 					JFrame f = new JFrame();
@@ -325,8 +334,8 @@ public class GUI extends JFrame{
 					south.add(close);
 					f.add(south, BorderLayout.SOUTH);
 					f.setTitle("Help");
-					f.setSize(720, 780);
-					f.setLocation(360, 70);
+					f.setSize(800, 800);
+					f.setLocationRelativeTo(null);
 					f.setVisible(true);
 					break;
 				case "Stop":
@@ -347,6 +356,7 @@ public class GUI extends JFrame{
 					} else {
 						speed = 10;
 					}
+					break;
 				case "Print route":
 					JFrame routeFrame = new JFrame();
 					routeFrame.setLayout(new BorderLayout());
@@ -365,7 +375,6 @@ public class GUI extends JFrame{
 							info.append("City ").append(i * 5 + j).append(": ").append(route.getRoute().get(i).toString()).append("\t");
 						}
 						info.append("\n");
-
 					}
 					info.append("Best route: \n").append(route.getIndividual().toString());
 					tfRoute.setText(info.toString());
@@ -379,6 +388,7 @@ public class GUI extends JFrame{
 					routeFrame.setSize(new Dimension(1080, 720));
 					routeFrame.setLocationRelativeTo(null);
 					routeFrame.setVisible(true);
+					break;
 			}
 		}
 	}
