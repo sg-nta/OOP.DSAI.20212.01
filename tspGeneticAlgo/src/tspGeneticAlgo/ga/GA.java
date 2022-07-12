@@ -54,19 +54,19 @@ public class GA {
 		Population result = new Population(population.getSize());
 		for (int i = 0; i < population.getSize(); i++) {
 			
-			Selection selection = new Selection(population,elitism,tournamentSize,i);
+			Selection selection = new TournamentSelection(population,elitism,tournamentSize,i);
 			selection.execute();
 			Individual father = selection.getFather();
 			Individual mother = selection.getMother();
 			
-			CrossOver crossOver = new CrossOver(population, crossOverRate, father, mother, i);
+			CrossOver crossOver = new TwoPointCrossOver(population, crossOverRate, father, mother, i);
 			crossOver.setResult(result);
 			crossOver.execute();
 			
 			result = crossOver.getResult();
 		}
 		population = result;
-		Mutation mutation = new Mutation(population, mutationRate, elitism);
+		Mutation mutation = new TwoPointSwappingMutation(population, mutationRate, elitism);
 		mutation.execute();
 		population = mutation.getPopulation();
 		return population;

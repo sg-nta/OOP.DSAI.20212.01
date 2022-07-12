@@ -21,10 +21,6 @@ public class Individual {
 			individual.add(gene);
 		}
 
-//		randomize(individual, nGene);
-//		randomizeIncludeInitCity(individual, nGene);
-//		randomizeIncludeInitCity give the best performance
-//		(faster convergence and shortest optimal result)
 		this.chromosome = individual;
 	}
 //	============== Get & Set ==============
@@ -66,23 +62,4 @@ public class Individual {
 		return res.toString();
 	}
 
-//	public void randomize(ArrayList<Integer> individual, int nGene){
-//		for (int i = nGene - 1; i > 0; i--){
-//			Random rand = new Random();
-//			int index = rand.nextInt(1, nGene);
-//			int a = individual.get(index);
-//			individual.set(index, individual.get(i));
-//			individual.set(i, a);
-//		}
-//	}
-//
-//	public void randomizeIncludeInitCity(ArrayList<Integer> individual, int nGene){
-//		for (int i = nGene - 1; i > 0; i--){
-//			Random rand = new Random();
-//			int index = rand.nextInt(0, nGene);
-//			int a = individual.get(index);
-//			individual.set(index, individual.get(i));
-//			individual.set(i, a);
-//		}
-//	}
 }

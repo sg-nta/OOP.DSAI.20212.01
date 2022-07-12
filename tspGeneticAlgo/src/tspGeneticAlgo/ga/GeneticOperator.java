@@ -7,9 +7,7 @@ public abstract class GeneticOperator {
 	public GeneticOperator(Population population) {
 		this.population = population;
 	}
-	public void execute() {
-		
-	}
+	public abstract void execute();
 	public Population getPopulation() {
 		return population;
 	}
