@@ -20,6 +20,6 @@ public class Node {
 		return Math.sqrt(Math.abs(deltaXSq + deltaYSq));
 	}
 	public String toString(){
-		return "x: " + getX() + "- y: " + getY();
+		return "x: " + getX() + " - y: " + getY();
 	}
 }
