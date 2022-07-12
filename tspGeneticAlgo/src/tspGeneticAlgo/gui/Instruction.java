@@ -29,9 +29,12 @@ public class Instruction {
                 "- A very small mutation rate may lead to genetic drift (which is non-ergodic in nature)<br/>"+
                 "- A mutation rate that is too high may lead to loss of good solutions.<br/>"+
                 "<h2>Running the app:</h2>"+
+                "Combo box <b>\"Speed\"</b> has 3 levels: fast - medium - slow corresponding to the speed that the app run<br/>"+
+                "and draw each step to find the solution.<br/>"+
                 "Click on <b>\"Start button\"</b> perform GA on a random sets of data points with all parameter set above.<br/>"+
                 "Click on <b>\"Stop button\"</b> to get the temporary best solution.<br/>"+
                 "Click on <b>\"Restart button\"</b> to reset all the program.<br/>"+
+                "Click on <b>\"Print route\"</b> after or while running the program to print out the route info and best route.<br/>"+
                 "<h1>Now let's dive into the world of Genetic Algorithm.</h1>"+
                 "</body>"+
                 "</html>";
