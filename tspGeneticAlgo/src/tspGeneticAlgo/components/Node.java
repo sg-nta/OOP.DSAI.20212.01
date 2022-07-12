@@ -19,4 +19,7 @@ public class Node {
 		double deltaYSq = Math.pow((node.getY() - this.getY()), 2);
 		return Math.sqrt(Math.abs(deltaXSq + deltaYSq));
 	}
+	public String toString(){
+		return "x: " + getX() + "- y: " + getY();
+	}
 }
