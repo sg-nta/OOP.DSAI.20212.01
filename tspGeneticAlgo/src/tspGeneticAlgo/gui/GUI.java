@@ -3,16 +3,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
+import javax.naming.LimitExceededException;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import tspGeneticAlgo.components.Individual;
 import tspGeneticAlgo.components.Node;
 import tspGeneticAlgo.components.Population;
 import tspGeneticAlgo.components.Route;
 import tspGeneticAlgo.ga.GA;
 
-public class GUI extends JFrame{
+public class GUI extends JFrame {
 //	private Route route;
 	private Route prevRoute;
 	private JTextField populationSizeText;
@@ -132,7 +138,7 @@ public class GUI extends JFrame{
 					sortedPopulation = population.sortByFitness();
 					prevRoute = new Route(sortedPopulation.get(0), nodes);
 
-					time = new Timer(400, new ActionListener() {
+					time = new Timer(40, new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -208,7 +214,7 @@ public class GUI extends JFrame{
 				f.add(south, BorderLayout.SOUTH);
 				f.setTitle("Help");
 				f.setSize(720, 760);
-				f.setLocation(360, 70);
+				f.setLocationRelativeTo(null);;
 				f.setVisible(true);
 			}
 		});
@@ -285,17 +291,21 @@ public class GUI extends JFrame{
 		gbc.gridy++;
 
 
-		JButton btnRestart = new JButton("Restart");
-		btnRestart.addActionListener(new ActionListener() {
+		JButton btnQuit = new JButton("Quit");
+		btnQuit.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new GUI();
-				dispose();
+				int option = JOptionPane.showConfirmDialog(new JFrame(), "Do you want to quit?", "Quit", JOptionPane.YES_NO_OPTION);
+				if (option == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
 			}
+			
 		});
-		btnRestart.setPreferredSize(btnDim);
-		btnRestart.setForeground(new Color(166,75,42));
-		east.add(btnRestart, gbc);
+		btnQuit.setPreferredSize(btnDim);
+		btnQuit.setForeground(new Color(166,75,42));
+		east.add(btnQuit, gbc);
 		gbc.gridy++;
 
 		lblgenerations = new JLabel("0", 0);
