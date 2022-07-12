@@ -25,8 +25,6 @@ public class Draw extends JPanel {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
-
 	public void setRoute(Route oldRoute, Route newRoute) {
 		this.oldRoute = oldRoute;
 		this.newRoute = newRoute;
@@ -34,7 +32,7 @@ public class Draw extends JPanel {
 	}
 	public Draw() {
 		status = 0;
-		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+//		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 	}
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -45,6 +43,7 @@ public class Draw extends JPanel {
 			Color cityColor = new Color(166,75,42);
 			Color lineColor = new Color(215, 168, 110);
 			Color initColor = new Color(63, 78, 79);
+			Color newLineColor = new Color(64, 223, 239);
 			Graphics2D g2 = (Graphics2D)g;
 			for (int i = 0; i < oldRouteList.size(); i ++ ) {
 				int scale = 6;
@@ -55,7 +54,7 @@ public class Draw extends JPanel {
 					g2.fillOval(oldRouteList.get(i).getX() * scale - 5 , oldRouteList.get(i).getY() * scale - 5, 10, 10);
 				}
 				else {
-					g2.setColor(Color.GREEN);
+					g2.setColor(newLineColor);
 					g2.drawLine(newRouteList.get(i).getX() * scale, newRouteList.get(i).getY() * scale, newRouteList.get(i + 1).getX() * scale,newRouteList.get(i + 1).getY() * scale);
 					g2.setColor(lineColor);
 					g2.drawLine(oldRouteList.get(i).getX() * scale, oldRouteList.get(i).getY() * scale, oldRouteList.get(i + 1).getX() * scale,oldRouteList.get(i + 1).getY() * scale);
@@ -76,7 +75,7 @@ public class Draw extends JPanel {
 		}
 		
 	}
-	public void setPrefferredSize(Dimension d){
+	public void setPreferredSize(Dimension d){
 		super.setPreferredSize(d);
 	}
 

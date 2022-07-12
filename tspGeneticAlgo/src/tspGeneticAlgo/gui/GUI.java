@@ -3,23 +3,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Optional;
 
-import javax.naming.LimitExceededException;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
 import tspGeneticAlgo.components.Individual;
 import tspGeneticAlgo.components.Node;
 import tspGeneticAlgo.components.Population;
 import tspGeneticAlgo.components.Route;
 import tspGeneticAlgo.ga.GA;
 
-public class GUI extends JFrame {
-//	private Route route;
+public class GUI extends JFrame{
+	private Route route;
 	private Route prevRoute;
 	private JTextField populationSizeText;
 	private JTextField numGensText;
@@ -32,28 +26,31 @@ public class GUI extends JFrame {
 	private int generation = 1;
 	private Population population;
 	private Timer time;
-
 	private int status = 0;
 	private Draw draw = new Draw();
 	private List<Individual> sortedPopulation;
+	private JComboBox cbSpeed;
+	private int speed;
+	private JButton btnPrint;
 
 	public GUI() {
+
 		Container cp = getContentPane();
 		cp.setLayout(new BorderLayout());
-		setTitle("Genetic Algorithm for TSP");
 		cp.add(createEast(), BorderLayout.EAST);
 		cp.add(draw, BorderLayout.CENTER);
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1080, 720);
+		setTitle("Genetic Algorithm for TSP");
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	public static void main(String[] args) {
 		new GUI();
 	}
-	private JPanel createEast() {
+	JPanel createEast() {
 		JPanel east = new JPanel();
-
 		east.setLayout(new GridBagLayout());
 		east.setBackground(new Color(240, 235, 227));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -64,28 +61,29 @@ public class GUI extends JFrame {
 		gbc.gridy += 1;
 
 //		==== Create general Font and Dimension=====
-		Font myFont = new Font("Arial", 0, 18);
+		Font myFont = new Font("Arial", Font.PLAIN, 18);
 		Dimension lblDim = new Dimension(150, 18);
 		Dimension tfDim = new Dimension(80, 50);
 		Dimension btnDim = new Dimension(120, 50);
 		Color lblColor = new Color(63, 78, 79);
 //		=================================================
-
-		JLabel lblSize = new JLabel("Population size: ", 2);
+		ButtonListener btnListener = new ButtonListener();
+//		=================================================
+		JLabel lblSize = new JLabel("Population size: ", SwingConstants.LEFT);
 		lblSize.setPreferredSize(lblDim);
 		lblSize.setFont(myFont);
 		lblSize.setForeground(lblColor);
 		east.add(lblSize, gbc);
 		gbc.gridy += 1;
 
-		JLabel lblGen = new JLabel("Total generations: ", 2);
+		JLabel lblGen = new JLabel("Total generations: ", SwingConstants.LEFT);
 		lblGen.setPreferredSize(lblDim);
 		lblGen.setFont(myFont);
 		lblGen.setForeground(lblColor);
 		east.add(lblGen, gbc);
 		gbc.gridy += 1;
 
-		JLabel lblNode = new JLabel("Cities: ", 2);
+		JLabel lblNode = new JLabel("Cities: ", SwingConstants.LEFT);
 		lblNode.setPreferredSize(lblDim);
 		lblNode.setFont(myFont);
 		lblNode.setForeground(lblColor);
@@ -93,57 +91,177 @@ public class GUI extends JFrame {
 		gbc.gridy += 1;
 
 
-		JLabel lblSurvival = new JLabel("Elitism: ", 2);
+		JLabel lblSurvival = new JLabel("Elitism: ", SwingConstants.LEFT);
 		lblSurvival.setPreferredSize(lblDim);
 		lblSurvival.setFont(myFont);
 		lblSurvival.setForeground(lblColor);
 		east.add(lblSurvival, gbc);
 		gbc.gridy += 1;
 
-		JLabel lblCrossover = new JLabel("Crossover rate: ", 2);
+		JLabel lblCrossover = new JLabel("Crossover rate: ", SwingConstants.LEFT);
 		lblCrossover.setPreferredSize(lblDim);
 		lblCrossover.setFont(myFont);
 		lblCrossover.setForeground(lblColor);
 		east.add(lblCrossover, gbc);
 		gbc.gridy += 1;
 
-		JLabel lblMutation = new JLabel("Mutation rate: ", 2);
+		JLabel lblMutation = new JLabel("Mutation rate: ", SwingConstants.LEFT);
 		lblMutation.setPreferredSize(lblDim);
 		lblMutation.setFont(myFont);
 		lblMutation.setForeground(lblColor);
 		east.add(lblMutation, gbc);
 		gbc.gridy++;
 
+		JLabel lblSpeed = new JLabel("Speed: ", SwingConstants.LEFT);
+		lblSpeed.setPreferredSize(lblDim);
+		lblSpeed.setFont(myFont);
+		lblSpeed.setForeground(lblColor);
+		east.add(lblSpeed, gbc);
+		gbc.gridy++;
+
 		JButton btnSubmit = new JButton("Enter");
-		btnSubmit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (status == 0) {
-					status = 1;
-					lblgenerations.setText("");
-					bestDistance.setText("");
-					generation = 1;
-					int populationSize = Integer.parseInt(populationSizeText.getText()) ;
-					int numGens = Integer.parseInt(numGensText.getText()) ;
-					int numNodes = Integer.parseInt(numNodesText.getText()) ;
-					int numSurvival = Integer.parseInt(numSurvivalText.getText());
-					float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
-					float rOfMutation = Float.parseFloat(rMutationText.getText());
-					
+		btnSubmit.addActionListener(btnListener);
+		btnSubmit.setPreferredSize(btnDim);
+		btnSubmit.setForeground(lblColor);
+		east.add(btnSubmit, gbc);
+		gbc.gridy ++;
 
-					GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, 10);
-					Node[] nodes = ga.generateNodes();
-					population = ga.initPopulation();
-					ga.updateFitness(population, nodes);
-					sortedPopulation = population.sortByFitness();
-					prevRoute = new Route(sortedPopulation.get(0), nodes);
+		JButton btnHelp = new JButton("Help");
+		btnHelp.addActionListener(btnListener);
+		btnHelp.setPreferredSize(btnDim);
+		btnHelp.setForeground(Color.gray);
+		east.add(btnHelp, gbc);
+		gbc.gridy ++;
 
-					time = new Timer(40, new ActionListener() {
+		JLabel lblGenerations = new JLabel("Generations: ", SwingConstants.LEFT);
+		lblGenerations.setPreferredSize(lblDim);
+		lblGenerations.setFont(myFont);
+		lblGenerations.setForeground(lblColor);
+		east.add(lblGenerations, gbc);
+		gbc.gridy += 1;
 
-						@Override
-						public void actionPerformed(ActionEvent e) {
+		JLabel lblBestDistance = new JLabel("Best Distance: ", SwingConstants.LEFT);
+		lblBestDistance.setPreferredSize(lblDim);
+		lblBestDistance.setFont(myFont);
+		lblBestDistance.setForeground(lblColor);
+		east.add(lblBestDistance, gbc);
+
+		gbc.gridx ++;
+		gbc.gridy = 0;
+		JLabel nameProgram = new JLabel("TSP-GA", SwingConstants.CENTER);
+		nameProgram.setFont(new Font("Arial", Font.BOLD, 25));
+		nameProgram.setPreferredSize(new Dimension(100, 50));
+		nameProgram.setForeground(new Color(142, 50, 10));
+		east.add(nameProgram);
+		gbc.gridy++;
+
+		populationSizeText = new JTextField("1000",10);
+		populationSizeText.setPreferredSize(tfDim);
+		east.add(populationSizeText, gbc);
+		gbc.gridy++;
+
+		numGensText = new JTextField("2000", 10);
+		numGensText.setPreferredSize(tfDim);
+		east.add(numGensText, gbc);
+		gbc.gridy++;
+
+		numNodesText = new JTextField("50", 10);
+		numNodesText.setPreferredSize(tfDim);
+		east.add(numNodesText, gbc);
+		gbc.gridy++;
+
+		numSurvivalText = new JTextField("5",10);
+		numSurvivalText.setPreferredSize(tfDim);
+		east.add(numSurvivalText, gbc);
+		gbc.gridy++;
+
+		rCrossOverText = new JTextField("0.9",10);
+		rCrossOverText.setPreferredSize(tfDim);
+		east.add(rCrossOverText, gbc);
+		gbc.gridy++;
+
+		rMutationText = new JTextField("0.05",10);
+		rMutationText.setPreferredSize(tfDim);
+		east.add(rMutationText, gbc);
+		gbc.gridy++;
+
+
+		String[] speedType = new String[]{"Fast", "Medium", "Slow"};
+		cbSpeed = new JComboBox(speedType);
+		cbSpeed.addActionListener(btnListener);
+		cbSpeed.setPreferredSize(btnDim);
+
+		east.add(cbSpeed, gbc);
+		gbc.gridy++;
+
+		JButton btnStop = new JButton("Stop");
+		btnStop.addActionListener(btnListener);
+		btnStop.setPreferredSize(btnDim);
+		btnStop.setForeground(new Color(166,75,42));
+		east.add(btnStop, gbc);
+		gbc.gridy++;
+
+		JButton btnRestart = new JButton("Restart");
+		btnRestart.addActionListener(btnListener);
+		btnRestart.setPreferredSize(btnDim);
+		btnRestart.setForeground(new Color(166,75,42));
+		east.add(btnRestart, gbc);
+		gbc.gridy++;
+
+		lblgenerations = new JLabel("0", SwingConstants.CENTER);
+		lblgenerations.setPreferredSize(new Dimension(100, 50));
+		lblgenerations.setForeground(new Color(215,168 ,110));
+		lblgenerations.setFont(new Font("Arial", Font.ITALIC, 20));
+		east.add(lblgenerations, gbc);
+		gbc.gridy++;
+
+		bestDistance = new JLabel("Unknown", SwingConstants.CENTER);
+		bestDistance.setPreferredSize(new Dimension(100, 50));
+		bestDistance.setForeground(new Color(215,168 ,110));
+		bestDistance.setFont(new Font("Arial", Font.BOLD, 18));
+		east.add(bestDistance, gbc);
+		gbc.gridy++;
+
+		btnPrint = new JButton("Print route");
+		btnPrint.addActionListener(btnListener);
+		btnPrint.setPreferredSize(btnDim);
+		btnPrint.setForeground(new Color(166,75,42));
+		east.add(btnPrint, gbc);
+		gbc.gridy++;
+		btnPrint.setVisible(false);
+		return east;
+	}
+
+
+	class ButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent evt){
+			String button =  evt.getActionCommand();
+			Color lblColor = new Color(63, 78, 79);
+			switch (button){
+				case "Enter":
+					if (status == 0) {
+						btnPrint.setVisible(true);
+						status = 1;
+						lblgenerations.setText("");
+						bestDistance.setText("");
+						generation = 1;
+						int populationSize = Integer.parseInt(populationSizeText.getText()) ;
+						int numGens = Integer.parseInt(numGensText.getText()) ;
+						int numNodes = Integer.parseInt(numNodesText.getText()) ;
+						int numSurvival = Integer.parseInt(numSurvivalText.getText());
+						float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
+						float rOfMutation = Float.parseFloat(rMutationText.getText());
+
+						GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, 10);
+						Node[] nodes = ga.generateNodes();
+						population = ga.initPopulation();
+						ga.updateFitness(population, nodes);
+						sortedPopulation = population.sortByFitness();
+						prevRoute = new Route(sortedPopulation.get(0), nodes);
+
+						time = new Timer(speed, e -> {
 							sortedPopulation = population.sortByFitness();
-							Route route = new Route(sortedPopulation.get(0), nodes);
+							route = new Route(sortedPopulation.get(0), nodes);
 							System.out.println("G"+generation+" Best distance: " + route.totalDistance());
 							lblgenerations.setText(String.valueOf(generation));
 							bestDistance.setText(String.valueOf((double)Math.round(route.totalDistance()*100)/100));
@@ -163,166 +281,92 @@ public class GUI extends JFrame {
 								status = 0;
 								System.out.println(route.getIndividual());
 							}
-						}
-
-					});
-					time.start();
-				}
-			}
-		});
-		btnSubmit.setPreferredSize(btnDim);
-		btnSubmit.setForeground(lblColor);
-		east.add(btnSubmit, gbc);
-		gbc.gridy ++;
-
-		JButton btnHelp = new JButton("Help");
-		btnHelp.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFrame f = new JFrame();
-//				JDialog d = new JDialog(f, "Help");
-				f.setLayout(new BorderLayout());
-
-				JPanel heading = new JPanel();
-				JLabel lblHeading = new JLabel("Guidance to run this application");
-				lblHeading.setFont(new Font("Arial", Font.BOLD, 30));
-				lblHeading.setForeground(new Color(142,50, 10));
-				lblHeading.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-				heading.add(lblHeading);
-				f.add(heading, BorderLayout.NORTH);
-
-				JPanel center = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				center.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-				Instruction instruction = new Instruction();
-				JLabel content = new JLabel();
-				content.setText(instruction.getContentText());
-				content.setForeground(lblColor);
-				center.add(content);
-				f.add(center, BorderLayout.CENTER);
-
-				JPanel south = new JPanel();
-				JButton close = new JButton("Cancel");
-				close.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						f.dispose();
+						});
+						time.start();
 					}
-				});
-				close.setPreferredSize(new Dimension(100, 30));
-				south.add(close);
-				f.add(south, BorderLayout.SOUTH);
-				f.setTitle("Help");
-				f.setSize(720, 760);
-				f.setLocationRelativeTo(null);;
-				f.setVisible(true);
+					break;
+				case "Help":
+					JFrame f = new JFrame();
+					f.setLayout(new BorderLayout());
+
+					JPanel heading = new JPanel();
+					JLabel lblHeading = new JLabel("Guidance to run this application");
+					lblHeading.setFont(new Font("Arial", Font.BOLD, 30));
+					lblHeading.setForeground(new Color(142,50, 10));
+					lblHeading.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+					heading.add(lblHeading);
+					f.add(heading, BorderLayout.NORTH);
+
+					JPanel center = new JPanel(new FlowLayout(FlowLayout.LEFT));
+					center.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+					Instruction instruction = new Instruction();
+					JLabel content = new JLabel();
+					content.setText(instruction.getContentText());
+					content.setForeground(lblColor);
+					center.add(content);
+					f.add(center, BorderLayout.CENTER);
+
+					JPanel south = new JPanel();
+					JButton close = new JButton("Cancel");
+					close.addActionListener(e -> f.dispose());
+					close.setPreferredSize(new Dimension(100, 30));
+					south.add(close);
+					f.add(south, BorderLayout.SOUTH);
+					f.setTitle("Help");
+					f.setSize(720, 780);
+					f.setLocation(360, 70);
+					f.setVisible(true);
+					break;
+				case "Stop":
+					status = 1 - status;
+					break;
+				case "Restart":
+					new GUI();
+					dispose();
+					break;
+				case "comboBoxChanged":
+					int index = cbSpeed.getSelectedIndex();
+					if (index == 1){
+						speed = 100;
+					} else if (index == 2) {
+						speed = 1000;
+					} else {
+						speed = 10;
+					}
+				case "Print route":
+					JFrame routeFrame = new JFrame();
+					routeFrame.setLayout(new BorderLayout());
+					JLabel lblRoute = new JLabel("Route");
+					lblRoute.setFont(new Font("Arial", Font.BOLD, 30));
+					lblRoute.setForeground(new Color(142, 50, 10));
+					lblRoute.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+					routeFrame.add(lblRoute, BorderLayout.NORTH);
+
+					JTextArea tfRoute = new JTextArea(10,10);
+					tfRoute.setLineWrap(true);
+					StringBuilder info = new StringBuilder("City location:\n");
+					int row = (route.getIndividual().getLength() / 5) + 1;
+					for (int i = 0; i < row; i++){
+						for (int j = 0; j < 5; j++) {
+							info.append("City ").append(i * 5 + j).append(": ").append(route.getRoute().get(i).toString()).append("\t");
+						}
+						info.append("\n");
+
+					}
+					info.append("Best route: \n").append(route.getIndividual().toString());
+					tfRoute.setText(info.toString());
+					tfRoute.setEditable(false);
+					routeFrame.add(tfRoute, BorderLayout.CENTER);
+					JPanel closeRoutePanel = new JPanel();
+					JButton closeRouteBtn = new JButton("Cancel");
+					closeRouteBtn.addActionListener(e -> routeFrame.dispose());
+					closeRoutePanel.add(closeRouteBtn);
+					routeFrame.add(closeRoutePanel, BorderLayout.SOUTH);
+					routeFrame.setSize(new Dimension(1080, 720));
+					routeFrame.setLocationRelativeTo(null);
+					routeFrame.setVisible(true);
 			}
-		});
-		btnHelp.setPreferredSize(btnDim);
-		btnHelp.setForeground(Color.gray);
-		east.add(btnHelp, gbc);
-		gbc.gridy ++;
-
-		JLabel lblGenerations = new JLabel("Generations: ", 2);
-		lblGenerations.setPreferredSize(lblDim);
-		lblGenerations.setFont(myFont);
-		lblGenerations.setForeground(lblColor);
-		east.add(lblGenerations, gbc);
-		gbc.gridy += 1;
-
-		JLabel lblBestDistance = new JLabel("Best Distance: ", 2);
-		lblBestDistance.setPreferredSize(lblDim);
-		lblBestDistance.setFont(myFont);
-		lblBestDistance.setForeground(lblColor);
-		east.add(lblBestDistance, gbc);
-
-
-		gbc.gridx ++;
-		gbc.gridy = 0;
-		JLabel nameProgram = new JLabel("TSP-GA", SwingConstants.CENTER);
-		nameProgram.setFont(new Font("Arial", Font.BOLD, 25));
-		nameProgram.setPreferredSize(new Dimension(100, 50));
-		nameProgram.setForeground(new Color(142, 50, 10));
-		east.add(nameProgram);
-		gbc.gridy+= 1;
-
-
-		populationSizeText = new JTextField("100",10);
-		populationSizeText.setPreferredSize(tfDim);
-		east.add(populationSizeText, gbc);
-		gbc.gridy+= 1;
-
-		numGensText = new JTextField("2000", 10);
-		numGensText.setPreferredSize(tfDim);
-		east.add(numGensText, gbc);
-		gbc.gridy+= 1;
-
-		numNodesText = new JTextField("50", 10);
-		numNodesText.setPreferredSize(tfDim);
-		east.add(numNodesText, gbc);
-		gbc.gridy+= 1;
-
-		numSurvivalText = new JTextField("5",10);
-		numSurvivalText.setPreferredSize(tfDim);
-		east.add(numSurvivalText, gbc);
-		gbc.gridy+= 1;
-
-		rCrossOverText = new JTextField("0.9",10);
-		rCrossOverText.setPreferredSize(tfDim);
-		east.add(rCrossOverText, gbc);
-		gbc.gridy+= 1;
-
-		rMutationText = new JTextField("0.05",10);
-		rMutationText.setPreferredSize(tfDim);
-		east.add(rMutationText, gbc);
-		gbc.gridy+= 1;
-
-
-		JButton btnStop = new JButton("Stop");
-		btnStop.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				status = 1 - status;
-			}
-		});
-		btnStop.setPreferredSize(btnDim);
-		btnStop.setForeground(new Color(166,75,42));
-		east.add(btnStop, gbc);
-		gbc.gridy++;
-
-
-		JButton btnQuit = new JButton("Quit");
-		btnQuit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(new JFrame(), "Do you want to quit?", "Quit", JOptionPane.YES_NO_OPTION);
-				if (option == JOptionPane.YES_OPTION) {
-					System.exit(0);
-				}
-			}
-			
-		});
-		btnQuit.setPreferredSize(btnDim);
-		btnQuit.setForeground(new Color(166,75,42));
-		east.add(btnQuit, gbc);
-		gbc.gridy++;
-
-		lblgenerations = new JLabel("0", 0);
-		lblgenerations.setPreferredSize(new Dimension(100, 50));
-		lblgenerations.setForeground(new Color(215,168 ,110));
-		lblgenerations.setFont(new Font("Arial", Font.ITALIC, 20));
-		east.add(lblgenerations, gbc);
-		gbc.gridy++;
-
-		bestDistance = new JLabel("Unknown", 0);
-		bestDistance.setPreferredSize(new Dimension(100, 50));
-		bestDistance.setForeground(new Color(215,168 ,110));
-
-		bestDistance.setFont(new Font("Arial", Font.BOLD, 18));
-		east.add(bestDistance, gbc);
-
-		return east;
+		}
 	}
 }
 	
