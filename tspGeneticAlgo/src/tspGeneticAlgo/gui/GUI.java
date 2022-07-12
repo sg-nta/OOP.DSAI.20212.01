@@ -21,6 +21,7 @@ public class GUI extends JFrame{
 	private JTextField numSurvivalText;
 	private JTextField rCrossOverText;
 	private JTextField rMutationText;
+	private JTextField sTournamentText;
 	private JLabel lblgenerations;
 	private JLabel bestDistance;
 	private int generation = 1;
@@ -41,7 +42,7 @@ public class GUI extends JFrame{
 		cp.add(draw, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1080, 720);
+		setSize(1080, 770);
 		setTitle("Genetic Algorithm for TSP");
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -112,6 +113,13 @@ public class GUI extends JFrame{
 		east.add(lblMutation, gbc);
 		gbc.gridy++;
 
+		JLabel lblTournament = new JLabel("Tournament size: ", SwingConstants.LEFT);
+		lblTournament.setPreferredSize(lblDim);
+		lblTournament.setFont(myFont);
+		lblTournament.setForeground(lblColor);
+		east.add(lblTournament, gbc);
+		gbc.gridy++;
+		
 		JLabel lblSpeed = new JLabel("Speed: ", SwingConstants.LEFT);
 		lblSpeed.setPreferredSize(lblDim);
 		lblSpeed.setFont(myFont);
@@ -184,7 +192,11 @@ public class GUI extends JFrame{
 		rMutationText.setPreferredSize(tfDim);
 		east.add(rMutationText, gbc);
 		gbc.gridy++;
-
+		
+		sTournamentText = new JTextField("10",10);
+		sTournamentText.setPreferredSize(tfDim);
+		east.add(sTournamentText, gbc);
+		gbc.gridy++;
 
 		String[] speedType = new String[]{"Fast", "Medium", "Slow"};
 		cbSpeed = new JComboBox(speedType);
@@ -201,11 +213,11 @@ public class GUI extends JFrame{
 		east.add(btnStop, gbc);
 		gbc.gridy++;
 
-		JButton btnRestart = new JButton("Restart");
-		btnRestart.addActionListener(btnListener);
-		btnRestart.setPreferredSize(btnDim);
-		btnRestart.setForeground(new Color(166,75,42));
-		east.add(btnRestart, gbc);
+		JButton btnQuit = new JButton("Quit");
+		btnQuit.addActionListener(btnListener);
+		btnQuit.setPreferredSize(btnDim);
+		btnQuit.setForeground(new Color(166,75,42));
+		east.add(btnQuit, gbc);
 		gbc.gridy++;
 
 		lblgenerations = new JLabel("0", SwingConstants.CENTER);
@@ -251,8 +263,8 @@ public class GUI extends JFrame{
 						int numSurvival = Integer.parseInt(numSurvivalText.getText());
 						float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
 						float rOfMutation = Float.parseFloat(rMutationText.getText());
-
-						GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, 10);
+						int sOfTournament = Integer.parseInt(sTournamentText.getText());
+						GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, sOfTournament);
 						Node[] nodes = ga.generateNodes();
 						population = ga.initPopulation();
 						ga.updateFitness(population, nodes);
@@ -320,9 +332,11 @@ public class GUI extends JFrame{
 				case "Stop":
 					status = 1 - status;
 					break;
-				case "Restart":
-					new GUI();
-					dispose();
+				case "Quit":
+					int option = JOptionPane.showConfirmDialog(new JFrame(), "Do you want to quit the system?","Quit",JOptionPane.YES_NO_OPTION);
+					if (option == JOptionPane.YES_OPTION) {
+						System.exit(0);
+					}
 					break;
 				case "comboBoxChanged":
 					int index = cbSpeed.getSelectedIndex();
