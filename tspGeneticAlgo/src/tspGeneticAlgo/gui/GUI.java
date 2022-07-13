@@ -302,6 +302,7 @@ public class GUI extends JFrame{
 							int option = JOptionPane.showConfirmDialog(new JFrame(), "Invalid Input","Error",JOptionPane.DEFAULT_OPTION);
 							if (option == JOptionPane.YES_OPTION) {
 								new GUI();
+								dispose();
 							}
 						}
 				}
