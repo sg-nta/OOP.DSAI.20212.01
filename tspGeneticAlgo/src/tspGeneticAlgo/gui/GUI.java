@@ -246,8 +246,14 @@ public class GUI extends JFrame{
 		return east;
 	}
 
-	public class NumberOutOfRangeException extends Exception {
-		public NumberOutOfRangeException(String message) {
+	public class NaturalNumberException extends Exception {
+		public NaturalNumberException(String message) {
+			super(message);
+		}
+	}
+
+	public class FloatRateException extends Exception {
+		public FloatRateException(String message) {
 			super(message);
 		}
 	}
@@ -274,16 +280,22 @@ public class GUI extends JFrame{
 							float rOfMutation = Float.parseFloat(rMutationText.getText());
 							int sOfTournament = Integer.parseInt(sTournamentText.getText());
 							if (numGens < 0) {
-								throw new NumberOutOfRangeException("Number out of range, must be a positive number");
+								throw new NaturalNumberException("Number out of range, must be a positive number");
 							}
-							if (numSurvival < 0) {
-								throw new NumberOutOfRangeException("Number out of range, must be a positive number");
+							if (numNodes <= 0) {
+								throw new NaturalNumberException("Number out of range, must be a positive number");
+							}
+							if (numSurvival <= 0) {
+								throw new NaturalNumberException("Number out of range, must be a positive number");
 							}
 							if ((rOfCrossOver < 0) || (rOfCrossOver > 1)) {
-								throw new NumberOutOfRangeException("Number out of range, must be within 0 and 1");
+								throw new FloatRateException("Number out of range, must be within 0 and 1");
 							}
 							if ((rOfMutation < 0) || (rOfMutation > 1)) {
-								throw new NumberOutOfRangeException("Number out of range, must be within 0 and 1");
+								throw new FloatRateException("Number out of range, must be within 0 and 1");
+							}
+							if (sOfTournament <= 0) {
+								throw new NaturalNumberException("Number out of range, must be a positive number");
 							}
 							GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, sOfTournament);
 							Node[] nodes = ga.generateNodes();
@@ -324,8 +336,23 @@ public class GUI extends JFrame{
 								} 
 							});
 							time.start();
-						} catch (Exception e){
-							int option = JOptionPane.showConfirmDialog(new JFrame(), "Invalid Input","Error",JOptionPane.DEFAULT_OPTION);
+						} 
+						catch (NaturalNumberException e) {
+							int option = JOptionPane.showConfirmDialog(new JFrame(), "Number out of range, must be a natural number.","Error",JOptionPane.DEFAULT_OPTION);
+							if (option == JOptionPane.YES_OPTION) {
+								new GUI();
+								dispose();
+							}
+						}
+						catch (FloatRateException e) {
+							int option = JOptionPane.showConfirmDialog(new JFrame(), "Number out of range, must be a floating point number between 0 and 1.","Error",JOptionPane.DEFAULT_OPTION);
+							if (option == JOptionPane.YES_OPTION) {
+								new GUI();
+								dispose();
+							}
+						}
+						catch (Exception e){
+							int option = JOptionPane.showConfirmDialog(new JFrame(), "Invalid Input.","Error",JOptionPane.DEFAULT_OPTION);
 							if (option == JOptionPane.YES_OPTION) {
 								new GUI();
 								dispose();
