@@ -267,6 +267,24 @@ public class GUI extends JFrame{
 							float rOfCrossOver = Float.parseFloat(rCrossOverText.getText());
 							float rOfMutation = Float.parseFloat(rMutationText.getText());
 							int sOfTournament = Integer.parseInt(sTournamentText.getText());
+							if (numGens < 0) {
+								throw new IllegalArgumentException("Number out of range, must be a positive number");
+							}
+							if (numNodes <= 0) {
+								throw new IllegalArgumentException("Number out of range, must be a positive number");
+							}
+							if (numSurvival <= 0) {
+								throw new IllegalArgumentException("Number out of range, must be a positive number");
+							}
+							if ((rOfCrossOver < 0) || (rOfCrossOver > 1)) {
+								throw new IllegalArgumentException("Number out of range, must be within 0 and 1");
+							}
+							if ((rOfMutation < 0) || (rOfMutation > 1)) {
+								throw new IllegalArgumentException("Number out of range, must be within 0 and 1");
+							}
+							if (sOfTournament <= 0) {
+								throw new IllegalArgumentException("Number out of range, must be a positive number");
+							}
 							GA ga = new GA(populationSize, numNodes, rOfMutation, rOfCrossOver, numSurvival, sOfTournament);
 							Node[] nodes = ga.generateNodes();
 							population = ga.initPopulation();
@@ -299,7 +317,8 @@ public class GUI extends JFrame{
 							});
 							time.start();
 						} catch (Exception e){
-							int option = JOptionPane.showConfirmDialog(new JFrame(), "Invalid Input","Error",JOptionPane.DEFAULT_OPTION);
+							String message = "Invalid input \n" + e.getMessage();
+							int option = JOptionPane.showConfirmDialog(new JFrame(), message,"Error",JOptionPane.DEFAULT_OPTION);
 							if (option == JOptionPane.YES_OPTION) {
 								new GUI();
 								dispose();
