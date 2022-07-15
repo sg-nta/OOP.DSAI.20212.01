@@ -1,6 +1,5 @@
 package tspGeneticAlgo.ga;
 
-import java.util.Random;
 
 import tspGeneticAlgo.components.Individual;
 import tspGeneticAlgo.components.Population;
