@@ -44,3 +44,6 @@ Assignments of members:
 • components package (10%): comparator method
 • geneticalgorithm package (10%): Handle Exception
 • report (10%) : Conclusion
+
+Link to video demo of the project:
+https://tinyurl.com/2zhh22j6
