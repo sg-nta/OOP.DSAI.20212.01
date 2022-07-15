@@ -322,7 +322,6 @@ public class GUI extends JFrame{
 							if (option == JOptionPane.YES_OPTION) {
 								new GUI();
 								dispose();
-								
 							}
 						}
 				}
