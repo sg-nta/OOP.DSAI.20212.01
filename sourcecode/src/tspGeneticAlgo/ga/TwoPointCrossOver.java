@@ -16,7 +16,6 @@ public class TwoPointCrossOver extends CrossOver{
 		// TODO Auto-generated constructor stub
 	}
 	public void execute() {
-		
 		if (this.crossOverRate > Math.random() && this.mother != null) {
 			ArrayList<Integer> childChromosome = new ArrayList<Integer>(Collections.nCopies(father.getLength(), -1));
 
