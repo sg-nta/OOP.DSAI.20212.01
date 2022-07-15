@@ -317,12 +317,10 @@ public class GUI extends JFrame{
 							});
 							time.start();
 						} catch (Exception e){
+							new GUI();
 							String message = "Invalid input \n" + e.getMessage();
-							int option = JOptionPane.showConfirmDialog(new JFrame(), message,"Error",JOptionPane.DEFAULT_OPTION);
-							if (option == JOptionPane.YES_OPTION) {
-								new GUI();
-								dispose();
-							}
+							JOptionPane.showConfirmDialog(new JFrame(), message,"Error",JOptionPane.DEFAULT_OPTION);
+							dispose();
 						}
 				}
 					break;
