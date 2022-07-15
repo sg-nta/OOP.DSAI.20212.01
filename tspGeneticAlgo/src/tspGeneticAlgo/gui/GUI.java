@@ -346,7 +346,7 @@ public class GUI extends JFrame{
 					f.add(center, BorderLayout.CENTER);
 
 					JPanel south = new JPanel();
-					JButton close = new JButton("Cancel");
+					JButton close = new JButton("OK");
 					close.addActionListener(e -> f.dispose());
 					close.setPreferredSize(new Dimension(100, 30));
 					south.add(close);
@@ -399,7 +399,7 @@ public class GUI extends JFrame{
 					tfRoute.setEditable(false);
 					routeFrame.add(tfRoute, BorderLayout.CENTER);
 					JPanel closeRoutePanel = new JPanel();
-					JButton closeRouteBtn = new JButton("Cancel");
+					JButton closeRouteBtn = new JButton("OK");
 					closeRouteBtn.addActionListener(e -> routeFrame.dispose());
 					closeRoutePanel.add(closeRouteBtn);
 					routeFrame.add(closeRoutePanel, BorderLayout.SOUTH);
