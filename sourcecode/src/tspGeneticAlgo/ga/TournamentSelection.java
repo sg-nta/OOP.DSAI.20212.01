@@ -22,26 +22,13 @@ public class TournamentSelection extends Selection{
 	public void execute() {
 		this.father = this.population.sortByFitness().get(this.index);
 		if (this.index >= this.elitism) {
-			ArrayList<Individual> randomIndividuals = new ArrayList<Individual>();
-			int[] indexList = new int[this.tournamentSize];
-			while (randomIndividuals.size() < this.tournamentSize) {
-				int rand = (int) (Math.random()*population.getSize());
-				int check = 0;
-				for (int index:indexList) {
-					if (rand == index) {
-						check += 1;
-					}
-				}
-				if (check == 0 && population.getIndividual(rand) != father) {
-					randomIndividuals.add(population.getIndividual(rand));
-				}
+			Population selected = new Population(tournamentSize);
+			Random rnd = new Random();
+			for (int i = 0; i < selected.getSize(); i++) {
+				int hihi = rnd.nextInt(i+1);
+				selected.setIndividual(i, population.getIndividual(hihi));
 			}
-			Population tournament = new Population(this.tournamentSize);
-			for (int i = 0; i < tournamentSize; i++) {
-				tournament.setIndividual(i, randomIndividuals.get(i));
-			}
-			List<Individual> sortedTournament = tournament.sortByFitness();
-			this.mother =  sortedTournament.get(0);
+			this.mother = selected.sortByFitness().get(0);
 		}
 		else {
 			this.mother = null;

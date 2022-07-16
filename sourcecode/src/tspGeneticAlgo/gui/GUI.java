@@ -273,6 +273,9 @@ public class GUI extends JFrame{
 							if (numNodes <= 0) {
 								throw new IllegalArgumentException("Number out of range, must be a positive number");
 							}
+							if (sOfTournament >= populationSize){
+								throw new IllegalArgumentException("Size of tournament out of bound");
+							}
 							if (numSurvival <= 0) {
 								throw new IllegalArgumentException("Number out of range, must be a positive number");
 							}
